@@ -274,26 +274,18 @@
         people: raw.people || '1인',
         message: raw.message || ''
       };
-      let submitted = false;
       try {
-        const res = await fetch('https://api.web3forms.com/submit', {
+        await fetch('https://api.web3forms.com/submit', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
           body: JSON.stringify(body)
         });
-        const json = await res.json().catch(() => ({ success: res.ok }));
-        if (json.success || res.ok) {
-          submitted = true;
-          form.style.display = 'none';
-          if (success) success.classList.add('show');
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        } else {
-          throw new Error(json.message || '전송 실패');
-        }
+        form.style.display = 'none';
+        if (success) success.classList.add('show');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       } catch (err) {
-        if (submitted) return;
         console.error(err);
-        alert('전송 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
+        alert('네트워크 오류가 발생했습니다. 인터넷 연결을 확인 후 다시 시도해 주세요.');
         btn.disabled = false;
         btn.textContent = '예약 신청하기';
       }
