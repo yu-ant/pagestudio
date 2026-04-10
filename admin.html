@@ -10,15 +10,16 @@
 </head>
 <body>
 
-<!-- ─── 비밀번호 잠금 ────────────────────────────────────────── -->
+<!-- ─── 로그인 화면 ──────────────────────────────────────────── -->
 <div class="admin-lock" id="adminLock">
   <div class="admin-lock__box">
     <span class="admin-lock__brand">PAGE STUDIO</span>
     <span class="admin-lock__label">관리자 전용 페이지</span>
     <form class="admin-lock__form" id="lockForm" novalidate>
-      <input class="admin-lock__input" type="password" id="adminPw" placeholder="●●●●●●" autocomplete="current-password" />
-      <p class="admin-lock__error" id="lockError">비밀번호가 올바르지 않습니다.</p>
-      <button type="submit" class="btn btn--primary" style="width:100%;">접속</button>
+      <input class="admin-lock__input" type="email" id="adminEmail" placeholder="이메일" autocomplete="email" />
+      <input class="admin-lock__input" type="password" id="adminPw" placeholder="●●●●●●" autocomplete="current-password" style="margin-top:8px;" />
+      <p class="admin-lock__error" id="lockError">이메일 또는 비밀번호가 올바르지 않습니다.</p>
+      <button type="submit" class="btn btn--primary" style="width:100%;margin-top:4px;">접속</button>
     </form>
   </div>
 </div>
@@ -26,7 +27,6 @@
 <!-- ─── 관리자 패널 ──────────────────────────────────────────── -->
 <div class="admin-panel" id="adminPanel">
 
-  <!-- 헤더 -->
   <div class="admin-header">
     <div class="admin-header__brand">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
@@ -39,339 +39,333 @@
     </button>
   </div>
 
-  <!-- 탭 -->
   <div class="admin-tabs" role="tablist">
     <button class="admin-tab active" data-pane="reservations" role="tab" aria-selected="true">예약 관리</button>
-    <button class="admin-tab" data-pane="contacts" role="tab" aria-selected="false">문의 내역</button>
-    <button class="admin-tab" data-pane="site" role="tab" aria-selected="false">사이트 정보</button>
+    <button class="admin-tab" data-pane="gallery" role="tab" aria-selected="false">갤러리 관리</button>
+    <button class="admin-tab" data-pane="faq" role="tab" aria-selected="false">FAQ 관리</button>
     <button class="admin-tab" data-pane="prices" role="tab" aria-selected="false">가격 관리</button>
   </div>
 
-  <!-- 콘텐츠 -->
   <div class="admin-content">
 
-    <!-- ─── 예약 관리 탭 ──── -->
+    <!-- ─── 예약 관리 ──── -->
     <div class="admin-pane active" id="pane-reservations" role="tabpanel">
       <div class="admin-card">
-        <div class="admin-card__title">
-          예약 목록
-          <button class="btn btn--xs btn--outline" id="clearReservations">전체 삭제</button>
-        </div>
-        <div id="reservationsStats" style="display:flex;gap:24px;margin-bottom:24px;flex-wrap:wrap;"></div>
+        <div class="admin-card__title">예약 목록</div>
+        <div id="reservationsStats" style="display:flex;gap:16px;margin-bottom:24px;flex-wrap:wrap;"></div>
         <div class="admin-table-wrap">
-          <table class="admin-table" id="reservationsTable">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>이름</th>
-                <th>연락처</th>
-                <th>상품</th>
-                <th>날짜</th>
-                <th>시간</th>
-                <th>인원</th>
-                <th>신청일</th>
-                <th>삭제</th>
-              </tr>
-            </thead>
-            <tbody id="reservationsTbody">
-              <tr><td colspan="9" style="text-align:center;padding:32px;color:var(--text-muted);">예약 내역이 없습니다.</td></tr>
-            </tbody>
+          <table class="admin-table">
+            <thead><tr><th>#</th><th>이름</th><th>연락처</th><th>상품</th><th>날짜</th><th>시간</th><th>인원</th><th>상태</th><th>신청일</th><th>삭제</th></tr></thead>
+            <tbody id="reservationsTbody"><tr><td colspan="10" style="text-align:center;padding:32px;color:var(--text-muted);">불러오는 중...</td></tr></tbody>
           </table>
         </div>
       </div>
     </div>
 
-    <!-- ─── 문의 내역 탭 ──── -->
-    <div class="admin-pane" id="pane-contacts" role="tabpanel">
+    <!-- ─── 갤러리 관리 ──── -->
+    <div class="admin-pane" id="pane-gallery" role="tabpanel">
+      <div class="admin-card" style="margin-bottom:24px;">
+        <div class="admin-card__title">사진 업로드</div>
+        <form id="galleryUploadForm" style="display:grid;gap:12px;">
+          <div class="admin-grid-2">
+            <div class="admin-field">
+              <label class="admin-label">이미지 파일 (복수 선택 가능)</label>
+              <input class="admin-input" type="file" id="galleryFile" accept="image/*" multiple required />
+            </div>
+            <div class="admin-field">
+              <label class="admin-label">카테고리</label>
+              <select class="admin-input" id="galleryCategory">
+                <option value="profile">프로필</option>
+                <option value="artist">아티스트</option>
+                <option value="group">단체</option>
+                <option value="selfbooth">셀프부스</option>
+              </select>
+            </div>
+            <div class="admin-field">
+              <label class="admin-label">설명 (alt)</label>
+              <input class="admin-input" type="text" id="galleryAlt" placeholder="사진 설명" />
+            </div>
+            <div class="admin-field">
+              <label class="admin-label">순서 번호</label>
+              <input class="admin-input" type="number" id="galleryOrder" placeholder="1" min="1" />
+            </div>
+          </div>
+          <div>
+            <button type="submit" class="btn btn--primary btn--sm" id="galleryUploadBtn">업로드</button>
+            <span id="galleryUploadStatus" style="font-family:var(--font-sans);font-size:0.85rem;margin-left:12px;color:var(--text-muted);"></span>
+          </div>
+        </form>
+      </div>
       <div class="admin-card">
-        <div class="admin-card__title">
-          문의 목록
-          <button class="btn btn--xs btn--outline" id="clearContacts">전체 삭제</button>
-        </div>
-        <div class="admin-table-wrap">
-          <table class="admin-table" id="contactsTable">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>이름</th>
-                <th>연락처</th>
-                <th>유형</th>
-                <th>내용</th>
-                <th>접수일</th>
-                <th>삭제</th>
-              </tr>
-            </thead>
-            <tbody id="contactsTbody">
-              <tr><td colspan="7" style="text-align:center;padding:32px;color:var(--text-muted);">문의 내역이 없습니다.</td></tr>
-            </tbody>
-          </table>
-        </div>
+        <div class="admin-card__title">등록된 사진</div>
+        <div id="galleryAdminGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;"></div>
       </div>
     </div>
 
-    <!-- ─── 사이트 정보 탭 ──── -->
-    <div class="admin-pane" id="pane-site" role="tabpanel">
+    <!-- ─── FAQ 관리 ──── -->
+    <div class="admin-pane" id="pane-faq" role="tabpanel">
+      <div class="admin-card" style="margin-bottom:24px;">
+        <div class="admin-card__title">FAQ 추가</div>
+        <form id="faqForm" style="display:grid;gap:12px;">
+          <div class="admin-field">
+            <label class="admin-label">질문</label>
+            <input class="admin-input" type="text" id="faqQuestion" placeholder="질문을 입력하세요" required />
+          </div>
+          <div class="admin-field">
+            <label class="admin-label">답변</label>
+            <textarea class="admin-textarea" id="faqAnswer" placeholder="답변을 입력하세요" required></textarea>
+          </div>
+          <div class="admin-field">
+            <label class="admin-label">순서 번호</label>
+            <input class="admin-input" type="number" id="faqOrder" placeholder="1" min="1" style="width:120px;" />
+          </div>
+          <div><button type="submit" class="btn btn--primary btn--sm">추가</button></div>
+        </form>
+      </div>
       <div class="admin-card">
-        <div class="admin-card__title">기본 정보</div>
-        <div id="siteFormWrap">
-          <!-- JS로 렌더링 -->
-          <p style="color:var(--text-muted);font-family:var(--font-sans);font-size:0.9rem;">불러오는 중...</p>
-        </div>
-        <p style="font-family:var(--font-sans);font-size:0.8125rem;color:var(--text-muted);margin-top:16px;">
-          ⚠ 이 페이지의 저장 기능은 로컬 미리보기 용도입니다. 실제 운영 시 서버 API 연동이 필요합니다.
-        </p>
+        <div class="admin-card__title">FAQ 목록</div>
+        <div id="faqList"></div>
       </div>
     </div>
 
-    <!-- ─── 가격 관리 탭 ──── -->
+    <!-- ─── 가격 관리 ──── -->
     <div class="admin-pane" id="pane-prices" role="tabpanel">
       <div class="admin-card">
-        <div class="admin-card__title">가격 목록</div>
-        <div id="pricesAdminWrap">
-          <p style="color:var(--text-muted);font-family:var(--font-sans);font-size:0.9rem;">불러오는 중...</p>
+        <div class="admin-card__title">
+          가격 목록
+          <span style="font-size:0.8rem;font-weight:400;color:var(--text-muted);">— 항목 클릭 시 편집</span>
         </div>
-        <p style="font-family:var(--font-sans);font-size:0.8125rem;color:var(--text-muted);margin-top:16px;">
-          ⚠ 가격 수정은 <code>data/prices.json</code> 파일을 직접 편집하세요.
-        </p>
+        <div id="pricesAdminList"></div>
       </div>
     </div>
 
-  </div><!-- /admin-content -->
-</div><!-- /admin-panel -->
+  </div>
+</div>
 
+<script src="https://cdn.jsdelivr.net/npm/pocketbase/dist/pocketbase.umd.js"></script>
+<script src="js/pb.js"></script>
 <script src="js/main.js"></script>
 <script>
-  // ─── 비밀번호 ────────────────────────────────────────────── //
-  const ADMIN_PW = '1234'; // 실제 배포 시 변경하세요
-  const lock = document.getElementById('adminLock');
-  const panel = document.getElementById('adminPanel');
-  const lockForm = document.getElementById('lockForm');
-  const lockError = document.getElementById('lockError');
+const lock  = document.getElementById('adminLock');
+const panel = document.getElementById('adminPanel');
 
-  // 이미 로그인 상태 확인
-  if (sessionStorage.getItem('ps_admin') === '1') {
-    lock.style.display = 'none';
-    panel.classList.add('show');
-    initAdmin();
+function fmtDate(iso) {
+  if (!iso) return '-';
+  try { return new Date(iso).toLocaleString('ko-KR', { dateStyle: 'short', timeStyle: 'short' }); }
+  catch { return iso; }
+}
+
+// ─── 로그인 ──────────────────────────────────────────────────── //
+if (pb.authStore.isValid) { showPanel(); }
+
+document.getElementById('lockForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const email = document.getElementById('adminEmail').value.trim();
+  const pw    = document.getElementById('adminPw').value;
+  try {
+    await pb.collection('_superusers').authWithPassword(email, pw);
+    showPanel();
+  } catch {
+    document.getElementById('lockError').classList.add('show');
   }
+});
 
-  lockForm.addEventListener('submit', e => {
-    e.preventDefault();
-    const pw = document.getElementById('adminPw').value;
-    if (pw === ADMIN_PW) {
-      sessionStorage.setItem('ps_admin', '1');
-      lock.style.display = 'none';
-      panel.classList.add('show');
-      initAdmin();
-    } else {
-      lockError.classList.add('show');
-      document.getElementById('adminPw').value = '';
-    }
+document.getElementById('logoutBtn').addEventListener('click', () => {
+  pb.authStore.clear();
+  location.reload();
+});
+
+function showPanel() {
+  lock.style.display = 'none';
+  panel.classList.add('show');
+  initAdmin();
+}
+
+// ─── 탭 전환 ─────────────────────────────────────────────────── //
+document.querySelectorAll('.admin-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.admin-tab').forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
+    document.querySelectorAll('.admin-pane').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    tab.setAttribute('aria-selected','true');
+    document.getElementById('pane-' + tab.dataset.pane)?.classList.add('active');
   });
+});
 
-  document.getElementById('logoutBtn').addEventListener('click', () => {
-    sessionStorage.removeItem('ps_admin');
-    location.reload();
-  });
+// ─── 관리자 초기화 ────────────────────────────────────────────── //
+function initAdmin() {
+  loadReservations();
+  loadGallery();
+  loadFaq();
+  loadPrices();
+}
 
-  // ─── 탭 전환 ─────────────────────────────────────────────── //
-  document.querySelectorAll('.admin-tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      document.querySelectorAll('.admin-tab').forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
-      document.querySelectorAll('.admin-pane').forEach(p => p.classList.remove('active'));
-      tab.classList.add('active');
-      tab.setAttribute('aria-selected', 'true');
-      document.getElementById(`pane-${tab.dataset.pane}`)?.classList.add('active');
-    });
-  });
-
-  // ─── 관리자 기능 초기화 ──────────────────────────────────── //
-  function initAdmin() {
-    renderReservations();
-    renderContacts();
-    renderSiteInfo();
-    renderPricesAdmin();
-  }
-
-  // 날짜 포맷
-  function fmtDate(iso) {
-    if (!iso) return '-';
-    try { return new Date(iso).toLocaleString('ko-KR', { dateStyle: 'short', timeStyle: 'short' }); }
-    catch { return iso; }
-  }
-
-  // ─── 예약 목록 ───────────────────────────────────────────── //
-  function renderReservations() {
-    const data = JSON.parse(localStorage.getItem('ps_reservations') || '[]');
-    const tbody = document.getElementById('reservationsTbody');
-    const stats = document.getElementById('reservationsStats');
-
-    // 통계
-    const packages = {};
-    data.forEach(r => { packages[r.package] = (packages[r.package] || 0) + 1; });
+// ─── 예약 목록 ───────────────────────────────────────────────── //
+async function loadReservations() {
+  const tbody = document.getElementById('reservationsTbody');
+  const stats = document.getElementById('reservationsStats');
+  try {
+    const records = await pb.collection('reservations').getFullList({ sort: '-created' });
+    const counts = {};
+    records.forEach(r => { counts[r.package] = (counts[r.package] || 0) + 1; });
     stats.innerHTML = `
-      <div style="background:rgba(247,216,200,0.3);border-radius:4px;padding:12px 20px;text-align:center;">
-        <div style="font-family:var(--font-en);font-size:1.5rem;font-weight:600;color:var(--color-primary);">${data.length}</div>
+      <div style="background:rgba(247,216,200,0.3);border-radius:4px;padding:10px 18px;text-align:center;">
+        <div style="font-family:var(--font-en);font-size:1.4rem;font-weight:600;color:var(--color-primary);">${records.length}</div>
         <div style="font-family:var(--font-sans);font-size:0.75rem;color:var(--text-muted);">총 예약</div>
       </div>
-      ${Object.entries(packages).map(([k, v]) => `
-        <div style="background:rgba(200,220,235,0.2);border-radius:4px;padding:12px 20px;text-align:center;">
-          <div style="font-family:var(--font-en);font-size:1.5rem;font-weight:600;color:var(--color-primary);">${v}</div>
+      ${Object.entries(counts).map(([k,v]) => `
+        <div style="background:rgba(200,220,235,0.2);border-radius:4px;padding:10px 18px;text-align:center;">
+          <div style="font-family:var(--font-en);font-size:1.4rem;font-weight:600;color:var(--color-primary);">${v}</div>
           <div style="font-family:var(--font-sans);font-size:0.75rem;color:var(--text-muted);">${k}</div>
-        </div>
-      `).join('')}
-    `;
-
-    if (!data.length) {
-      tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:32px;color:var(--text-muted);">예약 내역이 없습니다.</td></tr>';
+        </div>`).join('')}`;
+    if (!records.length) {
+      tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;padding:32px;color:var(--text-muted);">예약 내역이 없습니다.</td></tr>';
       return;
     }
-    tbody.innerHTML = [...data].reverse().map((r, i) => `
+    tbody.innerHTML = records.map((r, i) => `
       <tr>
-        <td style="color:var(--text-muted);">${data.length - i}</td>
+        <td style="color:var(--text-muted);">${records.length - i}</td>
         <td><strong>${r.name || '-'}</strong></td>
         <td><a href="tel:${r.phone}" style="color:var(--color-primary);">${r.phone || '-'}</a></td>
         <td>${r.package || '-'}</td>
         <td>${r.date || '-'}</td>
         <td>${r.time || '-'}</td>
         <td>${r.people || '-'}</td>
-        <td style="color:var(--text-muted);font-size:0.8rem;">${fmtDate(r.submittedAt)}</td>
-        <td><button class="btn btn--xs" style="color:#c0392b;border:1px solid rgba(192,57,43,0.3);" onclick="deleteReservation(${r.id})">삭제</button></td>
-      </tr>
-    `).join('');
+        <td>
+          <select class="admin-input" style="padding:4px 8px;font-size:0.8rem;" onchange="updateStatus('reservations','${r.id}',this.value)">
+            <option value="new"${r.status==='new'?' selected':''}>신규</option>
+            <option value="confirmed"${r.status==='confirmed'?' selected':''}>확정</option>
+            <option value="cancelled"${r.status==='cancelled'?' selected':''}>취소</option>
+          </select>
+        </td>
+        <td style="color:var(--text-muted);font-size:0.8rem;">${fmtDate(r.created)}</td>
+        <td><button class="btn btn--xs" style="color:#c0392b;border:1px solid rgba(192,57,43,0.3);" onclick="deleteRecord('reservations','${r.id}',loadReservations)">삭제</button></td>
+      </tr>`).join('');
+  } catch(e) {
+    tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;padding:32px;color:var(--text-muted);">불러오기 실패. PocketBase 연결을 확인하세요.</td></tr>';
   }
+}
 
-  window.deleteReservation = function(id) {
-    if (!confirm('이 예약을 삭제하시겠습니까?')) return;
-    const data = JSON.parse(localStorage.getItem('ps_reservations') || '[]').filter(r => r.id !== id);
-    localStorage.setItem('ps_reservations', JSON.stringify(data));
-    renderReservations();
-  };
+// ─── 갤러리 ──────────────────────────────────────────────────── //
+async function loadGallery() {
+  const grid = document.getElementById('galleryAdminGrid');
+  try {
+    const records = await pb.collection('gallery').getFullList({ sort: 'sort_order' });
+    if (!records.length) { grid.innerHTML = '<p style="color:var(--text-muted);font-family:var(--font-sans);font-size:0.9rem;">등록된 사진이 없습니다.</p>'; return; }
+    grid.innerHTML = records.map(r => {
+      const src = pbFile(r, r.image, '300x300');
+      return `
+        <div style="position:relative;border-radius:6px;overflow:hidden;aspect-ratio:1;background:#eee;">
+          <img src="${src}" alt="${r.alt||''}" style="width:100%;height:100%;object-fit:cover;" loading="lazy" />
+          <div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.55);padding:6px 8px;display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-family:var(--font-sans);font-size:0.7rem;color:#fff;">${r.category||''}</span>
+            <button class="btn btn--xs" style="color:#fff;border:1px solid rgba(255,255,255,0.5);padding:2px 8px;font-size:0.7rem;" onclick="deleteRecord('gallery','${r.id}',loadGallery)">삭제</button>
+          </div>
+        </div>`;
+    }).join('');
+  } catch { grid.innerHTML = '<p style="color:var(--text-muted);font-family:var(--font-sans);font-size:0.9rem;">불러오기 실패.</p>'; }
+}
 
-  document.getElementById('clearReservations').addEventListener('click', () => {
-    if (!confirm('모든 예약 내역을 삭제하시겠습니까?')) return;
-    localStorage.removeItem('ps_reservations');
-    renderReservations();
-  });
-
-  // ─── 문의 목록 ───────────────────────────────────────────── //
-  function renderContacts() {
-    const data = JSON.parse(localStorage.getItem('ps_contacts') || '[]');
-    const tbody = document.getElementById('contactsTbody');
-    if (!data.length) {
-      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:32px;color:var(--text-muted);">문의 내역이 없습니다.</td></tr>';
-      return;
+document.getElementById('galleryUploadForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const files    = document.getElementById('galleryFile').files;
+  const category = document.getElementById('galleryCategory').value;
+  const alt      = document.getElementById('galleryAlt').value;
+  const order    = parseInt(document.getElementById('galleryOrder').value) || 99;
+  const btn      = document.getElementById('galleryUploadBtn');
+  const status   = document.getElementById('galleryUploadStatus');
+  if (!files.length) return;
+  btn.disabled = true;
+  status.textContent = '업로드 중...';
+  try {
+    for (let i = 0; i < files.length; i++) {
+      const fd = new FormData();
+      fd.append('image', files[i]);
+      fd.append('alt', alt || files[i].name);
+      fd.append('category', category);
+      fd.append('sort_order', order + i);
+      await pb.collection('gallery').create(fd);
+      status.textContent = `(${i+1}/${files.length}) 업로드 중...`;
     }
-    tbody.innerHTML = [...data].reverse().map((r, i) => `
-      <tr>
-        <td style="color:var(--text-muted);">${data.length - i}</td>
-        <td><strong>${r.name || '-'}</strong></td>
-        <td><a href="tel:${r.phone}" style="color:var(--color-primary);">${r.phone || '-'}</a></td>
-        <td>${r.subject || '-'}</td>
-        <td style="max-width:260px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${r.message || '-'}</td>
-        <td style="color:var(--text-muted);font-size:0.8rem;">${fmtDate(r.submittedAt)}</td>
-        <td><button class="btn btn--xs" style="color:#c0392b;border:1px solid rgba(192,57,43,0.3);" onclick="deleteContact(${r.id})">삭제</button></td>
-      </tr>
-    `).join('');
-  }
+    status.textContent = '완료!';
+    e.target.reset();
+    loadGallery();
+  } catch(err) {
+    status.textContent = '오류: ' + (err.message || '업로드 실패');
+  } finally { btn.disabled = false; }
+});
 
-  window.deleteContact = function(id) {
-    if (!confirm('이 문의를 삭제하시겠습니까?')) return;
-    const data = JSON.parse(localStorage.getItem('ps_contacts') || '[]').filter(r => r.id !== id);
-    localStorage.setItem('ps_contacts', JSON.stringify(data));
-    renderContacts();
-  };
-
-  document.getElementById('clearContacts').addEventListener('click', () => {
-    if (!confirm('모든 문의 내역을 삭제하시겠습니까?')) return;
-    localStorage.removeItem('ps_contacts');
-    renderContacts();
-  });
-
-  // ─── 사이트 정보 ─────────────────────────────────────────── //
-  function renderSiteInfo() {
-    fetch('data/site.json')
-      .then(r => r.json())
-      .then(data => {
-        const wrap = document.getElementById('siteFormWrap');
-        wrap.innerHTML = `
-          <div class="admin-grid-2">
-            <div class="admin-field">
-              <label class="admin-label">브랜드명 (한국어)</label>
-              <input class="admin-input" type="text" value="${data.brand.name_ko}" readonly />
-            </div>
-            <div class="admin-field">
-              <label class="admin-label">브랜드명 (영어)</label>
-              <input class="admin-input" type="text" value="${data.brand.name_en}" readonly />
-            </div>
-            <div class="admin-field" style="grid-column:1/-1;">
-              <label class="admin-label">슬로건</label>
-              <input class="admin-input" type="text" value="${data.brand.slogan}" readonly />
-            </div>
-            <div class="admin-field" style="grid-column:1/-1;">
-              <label class="admin-label">미션</label>
-              <textarea class="admin-textarea" readonly>${data.brand.mission}</textarea>
-            </div>
-            <div class="admin-field">
-              <label class="admin-label">주소</label>
-              <input class="admin-input" type="text" value="${data.contact.address}" readonly />
-            </div>
-            <div class="admin-field">
-              <label class="admin-label">전화번호</label>
-              <input class="admin-input" type="text" value="${data.contact.phone}" readonly />
-            </div>
-            <div class="admin-field">
-              <label class="admin-label">운영시간</label>
-              <input class="admin-input" type="text" value="${data.contact.hours}" readonly />
-            </div>
+// ─── FAQ ─────────────────────────────────────────────────────── //
+async function loadFaq() {
+  const list = document.getElementById('faqList');
+  try {
+    const records = await pb.collection('faq').getFullList({ sort: 'sort_order' });
+    if (!records.length) { list.innerHTML = '<p style="color:var(--text-muted);font-family:var(--font-sans);font-size:0.9rem;">등록된 FAQ가 없습니다.</p>'; return; }
+    list.innerHTML = records.map((r, i) => `
+      <div style="border:1px solid rgba(234,201,183,0.4);border-radius:6px;padding:16px;margin-bottom:10px;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;">
+          <div style="flex:1;">
+            <p style="font-family:var(--font-sans);font-size:0.9rem;font-weight:600;color:var(--text-primary);margin-bottom:6px;">${i+1}. ${r.question}</p>
+            <p style="font-family:var(--font-serif);font-size:0.875rem;color:var(--text-muted);line-height:1.6;">${r.answer}</p>
           </div>
-          <p style="font-family:var(--font-sans);font-size:0.8rem;color:var(--text-muted);margin-top:12px;">수정은 <code>data/site.json</code> 파일을 직접 편집하세요.</p>
-        `;
-      })
-      .catch(() => {
-        document.getElementById('siteFormWrap').innerHTML = '<p style="color:var(--text-muted);">데이터를 불러올 수 없습니다.</p>';
-      });
-  }
+          <button class="btn btn--xs" style="color:#c0392b;border:1px solid rgba(192,57,43,0.3);flex-shrink:0;" onclick="deleteRecord('faq','${r.id}',loadFaq)">삭제</button>
+        </div>
+      </div>`).join('');
+  } catch { list.innerHTML = '<p style="color:var(--text-muted);font-family:var(--font-sans);">불러오기 실패.</p>'; }
+}
 
-  // ─── 가격 관리 ───────────────────────────────────────────── //
-  function renderPricesAdmin() {
-    fetch('data/prices.json')
-      .then(r => r.json())
-      .then(items => {
-        const wrap = document.getElementById('pricesAdminWrap');
-        wrap.innerHTML = `
-          <div class="admin-table-wrap">
-            <table class="admin-table">
-              <thead>
-                <tr>
-                  <th>상품명</th>
-                  <th>가격</th>
-                  <th>시간</th>
-                  <th>보정 컷</th>
-                  <th>전달 방식</th>
-                  <th>인기 상품</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${items.sort((a,b) => a.order - b.order).map(p => `
-                  <tr>
-                    <td><strong>${p.name}</strong></td>
-                    <td>${p.price}원~</td>
-                    <td>${p.duration}</td>
-                    <td>${p.retouched}</td>
-                    <td style="font-size:0.8rem;">${p.delivery}</td>
-                    <td>${p.featured ? '⭐ 인기' : '-'}</td>
-                  </tr>
-                `).join('')}
-              </tbody>
-            </table>
-          </div>
-        `;
-      })
-      .catch(() => {
-        document.getElementById('pricesAdminWrap').innerHTML = '<p style="color:var(--text-muted);">데이터를 불러올 수 없습니다.</p>';
-      });
-  }
+document.getElementById('faqForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const q = document.getElementById('faqQuestion').value.trim();
+  const a = document.getElementById('faqAnswer').value.trim();
+  const o = parseInt(document.getElementById('faqOrder').value) || 99;
+  if (!q || !a) return;
+  try {
+    await pb.collection('faq').create({ question: q, answer: a, sort_order: o });
+    e.target.reset();
+    loadFaq();
+  } catch(err) { alert('저장 실패: ' + (err.message || '')); }
+});
+
+// ─── 가격 목록 ───────────────────────────────────────────────── //
+async function loadPrices() {
+  const wrap = document.getElementById('pricesAdminList');
+  try {
+    const records = await pb.collection('prices').getFullList({ sort: 'sort_order' });
+    if (!records.length) { wrap.innerHTML = '<p style="color:var(--text-muted);font-family:var(--font-sans);">등록된 가격이 없습니다. PocketBase prices 컬렉션에 직접 추가하세요.</p>'; return; }
+    wrap.innerHTML = `
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead><tr><th>상품명</th><th>가격</th><th>시간</th><th>보정</th><th>인기</th><th>순서</th></tr></thead>
+          <tbody>${records.map(p => `
+            <tr>
+              <td><strong>${p.name}</strong></td>
+              <td>${p.price}원~</td>
+              <td>${p.duration}</td>
+              <td>${p.retouched}</td>
+              <td>${p.featured ? '⭐' : '-'}</td>
+              <td>${p.sort_order || '-'}</td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+      <p style="font-family:var(--font-sans);font-size:0.8rem;color:var(--text-muted);margin-top:12px;">가격 수정은 PocketBase 대시보드(http://192.168.219.47:8090/_/)에서 직접 편집하세요.</p>`;
+  } catch { wrap.innerHTML = '<p style="color:var(--text-muted);font-family:var(--font-sans);">불러오기 실패.</p>'; }
+}
+
+// ─── 공통 헬퍼 ───────────────────────────────────────────────── //
+window.deleteRecord = async function(collection, id, reloadFn) {
+  if (!confirm('삭제하시겠습니까?')) return;
+  try {
+    await pb.collection(collection).delete(id);
+    reloadFn();
+  } catch(err) { alert('삭제 실패: ' + (err.message || '')); }
+};
+
+window.updateStatus = async function(collection, id, status) {
+  try { await pb.collection(collection).update(id, { status }); }
+  catch(err) { alert('상태 변경 실패: ' + (err.message || '')); }
+};
 </script>
 <style>
   .admin-table td {
