@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>갤러리 | PAGE STUDIO 페이지스튜디오</title>
+  <meta name="description" content="페이지스튜디오의 촬영 작품을 감상해보세요. 아티스트 프로필, 일반 프로필, 단체 사진, 셀프 포토부스." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <style>
+    /* 갤러리 페이지 전용 필터 탭 */
+    .gallery__filters {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+    .gallery__filter-btn {
+      font-family: var(--font-sans);
+      font-size: 0.875rem;
+      font-weight: 400;
+      padding: 8px 22px;
+      border-radius: 40px;
+      border: 1.5px solid rgba(255,255,255,0.22);
+      color: rgba(255,255,255,0.65);
+      background: transparent;
+      cursor: pointer;
+      transition: all var(--transition);
+      letter-spacing: 0.03em;
+    }
+    .gallery__filter-btn:hover,
+    .gallery__filter-btn.active {
+      border-color: var(--color-accent);
+      color: var(--color-white);
+      background-color: rgba(247,216,200,0.12);
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── 네비게이션 ─────────────────────────────────────────── -->
+<header class="nav" id="nav">
+  <div class="nav__inner">
+    <a href="index.html" class="nav__logo">
+      <span class="nav__logo-en">PAGE STUDIO</span>
+      <span class="nav__logo-ko">페이지스튜디오</span>
+    </a>
+    <nav class="nav__menu" aria-label="주 메뉴">
+      <a href="index.html" class="nav__link">홈</a>
+      <a href="gallery.html" class="nav__link">갤러리</a>
+      <a href="price.html" class="nav__link">가격안내</a>
+      <a href="reservation.html" class="nav__link">예약하기</a>
+      <a href="contact.html" class="nav__link">오시는길</a>
+    </nav>
+    <button class="nav__hamburger" aria-label="메뉴 열기" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+<div class="nav__drawer" aria-hidden="true">
+  <a href="index.html" class="nav__link">홈</a>
+  <a href="gallery.html" class="nav__link">갤러리</a>
+  <a href="price.html" class="nav__link">가격안내</a>
+  <a href="reservation.html" class="nav__link">예약하기</a>
+  <a href="contact.html" class="nav__link">오시는길</a>
+</div>
+
+<!-- ─── 페이지 헤더 ─────────────────────────────────────────── -->
+<div class="page-header">
+  <span class="page-header__label">Gallery</span>
+  <h1 class="page-header__title">포트폴리오</h1>
+  <p class="page-header__desc">페이지스튜디오의 작품을 감상해보세요</p>
+</div>
+
+<!-- ─── 갤러리 섹션 ─────────────────────────────────────────── -->
+<section class="gallery" id="gallery">
+  <div class="gallery__header fade-in">
+    <div class="gallery__filters" id="galleryFilters">
+      <button class="gallery__filter-btn active" data-cat="all">전체</button>
+      <button class="gallery__filter-btn" data-cat="profile">프로필</button>
+      <button class="gallery__filter-btn" data-cat="artist">아티스트</button>
+      <button class="gallery__filter-btn" data-cat="group">단체</button>
+      <button class="gallery__filter-btn" data-cat="selfbooth">셀프부스</button>
+    </div>
+  </div>
+
+  <div class="gallery__grid" id="galleryGrid">
+    <!-- JS로 동적 렌더링 -->
+  </div>
+
+  <div id="galleryEmpty" style="display:none; text-align:center; color:rgba(255,255,255,0.4); font-family:var(--font-sans); font-size:0.9rem; margin-top:64px; padding-bottom:40px;">
+    해당 카테고리의 사진이 준비 중입니다.
+  </div>
+</section>
+
+<!-- ─── CTA 배너 ─────────────────────────────────────────────── -->
+<section class="cta-banner">
+  <div class="container">
+    <span class="cta-banner__en">Book Your Session</span>
+    <h2 class="cta-banner__title fade-in">나만의 한 페이지를 만들어보세요</h2>
+    <p class="cta-banner__desc fade-in delay-1">원하는 날짜와 상품을 선택하시면<br>확인 후 빠르게 안내 드립니다.</p>
+    <div class="cta-banner__actions fade-in delay-2">
+      <a href="reservation.html" class="btn btn--white">예약하기</a>
+      <a href="price.html" class="btn btn--ghost">가격 보기</a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 푸터 ──────────────────────────────────────────────────── -->
+<footer class="footer">
+  <div class="footer__inner">
+    <div>
+      <span class="footer__brand-en">PAGE STUDIO</span>
+      <span class="footer__brand-ko">페이지스튜디오</span>
+      <p class="footer__mission">감성을 담은 사진으로 고객의 이야기에<br>한 장의 페이지를 더합니다.</p>
+    </div>
+    <div>
+      <p class="footer__col-title">Info</p>
+      <div class="footer__info-line">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <span>부산 금정구 (부산대 인근)</span>
+      </div>
+      <div class="footer__info-line">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span>화–일 10:00 ~ 19:00 / 월 휴무</span>
+      </div>
+    </div>
+    <div>
+      <p class="footer__col-title">Follow</p>
+      <div class="footer__social">
+        <a href="#" class="footer__social-link" aria-label="인스타그램">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          Instagram
+        </a>
+        <a href="#" class="footer__social-link" aria-label="카카오 채널">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3C6.477 3 2 6.82 2 11.5c0 2.9 1.73 5.47 4.36 7.06L5.5 21l3.2-1.73C9.7 19.72 10.83 20 12 20c5.523 0 10-3.82 10-8.5S17.523 3 12 3z"/></svg>
+          카카오 채널
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <span class="footer__slogan">당신이라는 이야기에 한 장을 더한다</span>
+    <span class="footer__copy">© 2025 PAGE STUDIO. All rights reserved.</span>
+  </div>
+</footer>
+
+<!-- ─── 라이트박스 ────────────────────────────────────────────── -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="이미지 뷰어">
+  <button class="lightbox__close" aria-label="닫기">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+  </button>
+  <button class="lightbox__nav lightbox__nav--prev" aria-label="이전">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+  </button>
+  <img class="lightbox__img" src="" alt="" />
+  <button class="lightbox__nav lightbox__nav--next" aria-label="다음">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+  </button>
+  <span class="lightbox__counter"></span>
+</div>
+
+<script src="js/main.js"></script>
+<script>
+  // 갤러리 동적 렌더링
+  fetch('data/gallery.json')
+    .then(r => r.json())
+    .then(items => {
+      const grid = document.getElementById('galleryGrid');
+      const empty = document.getElementById('galleryEmpty');
+      if (!grid) return;
+
+      if (!items.length) {
+        // 플레이스홀더 8개
+        grid.innerHTML = Array.from({length: 8}, (_, i) => `<div class="gallery__placeholder" data-category="profile"></div>`).join('');
+        return;
+      }
+
+      grid.innerHTML = items.map((item, i) => `
+        <div class="gallery__item fade-in delay-${(i % 4) + 1}"
+             data-src="${item.src}"
+             data-alt="${item.alt}"
+             data-category="${item.category}"
+             role="button"
+             tabindex="0"
+             aria-label="${item.alt} 크게 보기">
+          <img src="${item.src}" alt="${item.alt}" loading="lazy"
+               onerror="this.parentElement.innerHTML='<div class=\\'gallery__placeholder\\' style=\\'aspect-ratio:2/3\\'></div>'" />
+          <div class="gallery__item-overlay">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35M11 8v6M8 11h6"/></svg>
+          </div>
+        </div>
+      `).join('');
+
+      window.dispatchEvent(new Event('galleryReady'));
+
+      // 키보드 접근성
+      grid.querySelectorAll('.gallery__item').forEach(el => {
+        el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') el.click(); });
+      });
+    })
+    .catch(() => {
+      // fetch 실패 시 플레이스홀더
+      const grid = document.getElementById('galleryGrid');
+      if (grid) {
+        grid.innerHTML = Array.from({length: 8}, () => `<div class="gallery__placeholder"></div>`).join('');
+      }
+    });
+
+  // 필터 기능
+  document.getElementById('galleryFilters')?.addEventListener('click', e => {
+    const btn = e.target.closest('.gallery__filter-btn');
+    if (!btn) return;
+    document.querySelectorAll('.gallery__filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const cat = btn.dataset.cat;
+    let visibleCount = 0;
+    document.querySelectorAll('.gallery__item, .gallery__placeholder').forEach(item => {
+      const show = cat === 'all' || item.dataset.category === cat;
+      item.style.display = show ? '' : 'none';
+      if (show) visibleCount++;
+    });
+    const empty = document.getElementById('galleryEmpty');
+    if (empty) empty.style.display = visibleCount === 0 ? 'block' : 'none';
+  });
+</script>
+</body>
+</html>

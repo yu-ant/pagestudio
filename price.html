@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>가격안내 | PAGE STUDIO 페이지스튜디오</title>
+  <meta name="description" content="페이지스튜디오 촬영 상품 가격 안내. 아티스트 프로필, 일반 프로필, 에센셜, 단체, 증명사진, 셀프 포토부스." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/components.css" />
+</head>
+<body>
+
+<!-- ─── 네비게이션 ─────────────────────────────────────────── -->
+<header class="nav scrolled" id="nav">
+  <div class="nav__inner">
+    <a href="index.html" class="nav__logo">
+      <span class="nav__logo-en">PAGE STUDIO</span>
+      <span class="nav__logo-ko">페이지스튜디오</span>
+    </a>
+    <nav class="nav__menu" aria-label="주 메뉴">
+      <a href="index.html" class="nav__link">홈</a>
+      <a href="gallery.html" class="nav__link">갤러리</a>
+      <a href="price.html" class="nav__link">가격안내</a>
+      <a href="reservation.html" class="nav__link">예약하기</a>
+      <a href="contact.html" class="nav__link">오시는길</a>
+    </nav>
+    <button class="nav__hamburger" aria-label="메뉴 열기" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+<div class="nav__drawer" aria-hidden="true">
+  <a href="index.html" class="nav__link">홈</a>
+  <a href="gallery.html" class="nav__link">갤러리</a>
+  <a href="price.html" class="nav__link">가격안내</a>
+  <a href="reservation.html" class="nav__link">예약하기</a>
+  <a href="contact.html" class="nav__link">오시는길</a>
+</div>
+
+<!-- ─── 페이지 헤더 ─────────────────────────────────────────── -->
+<div class="page-header">
+  <span class="page-header__label">Pricing</span>
+  <h1 class="page-header__title">가격 안내</h1>
+  <p class="page-header__desc">목적에 맞는 상품을 선택하세요. 모든 촬영은 고해상도 디지털 파일로 전달됩니다.</p>
+</div>
+
+<!-- ─── 가격 카드 ────────────────────────────────────────────── -->
+<section class="section section--bg" id="prices">
+  <div class="container">
+    <div class="prices__grid" id="pricesGrid">
+      <!-- JS로 동적 렌더링 -->
+    </div>
+  </div>
+</section>
+
+<!-- ─── 주의사항 & FAQ ─────────────────────────────────────────── -->
+<section class="section section--white" id="notes">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;" class="notes-grid">
+      <!-- 안내사항 -->
+      <div class="fade-in">
+        <span class="section-eyebrow">Notice</span>
+        <h2 class="section-title" style="font-size:1.5rem;">촬영 전 안내사항</h2>
+        <div class="divider"></div>
+        <div class="accordion" id="notesAccordion">
+          <div class="accordion__item open">
+            <button class="accordion__trigger" aria-expanded="true">
+              <span class="accordion__question">결제 방법</span>
+              <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+            <div class="accordion__body">
+              <p class="accordion__answer">예약 확정 후 예약금(30,000원)을 계좌이체로 먼저 납부해 주세요. 잔금은 촬영 당일 현장에서 현금·카드·계좌이체로 결제 가능합니다.</p>
+            </div>
+          </div>
+          <div class="accordion__item">
+            <button class="accordion__trigger" aria-expanded="false">
+              <span class="accordion__question">취소 및 환불 정책</span>
+              <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+            <div class="accordion__body">
+              <p class="accordion__answer">촬영 3일 전까지 연락 주시면 예약금 전액 환불 또는 일정 변경이 가능합니다. 촬영 3일 이내 취소 시 예약금은 환불되지 않습니다.</p>
+            </div>
+          </div>
+          <div class="accordion__item">
+            <button class="accordion__trigger" aria-expanded="false">
+              <span class="accordion__question">파일 전달 방식</span>
+              <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+            <div class="accordion__body">
+              <p class="accordion__answer">보정 파일은 촬영 후 7~10일 이내 클라우드 링크(구글 드라이브 또는 네이버 mybox)로 전달됩니다. 셀프 포토부스 파일은 QR 코드로 당일 즉시 전달됩니다.</p>
+            </div>
+          </div>
+          <div class="accordion__item">
+            <button class="accordion__trigger" aria-expanded="false">
+              <span class="accordion__question">추가 컷 구매</span>
+              <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+            <div class="accordion__body">
+              <p class="accordion__answer">보정 컷 추가는 1컷당 10,000원입니다. 원본 전체 파일은 별도 협의 후 구매하실 수 있습니다. 예약 시 또는 촬영 당일에 말씀해 주세요.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ -->
+      <div class="fade-in delay-2">
+        <span class="section-eyebrow">FAQ</span>
+        <h2 class="section-title" style="font-size:1.5rem;">자주 묻는 질문</h2>
+        <div class="divider"></div>
+        <div class="accordion" id="faqAccordion">
+          <!-- JS로 렌더링 -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CTA 배너 ─────────────────────────────────────────────── -->
+<section class="cta-banner">
+  <div class="container">
+    <span class="cta-banner__en">Ready to Shoot?</span>
+    <h2 class="cta-banner__title fade-in">마음에 드는 상품을 골랐다면</h2>
+    <p class="cta-banner__desc fade-in delay-1">지금 바로 예약하시면 원하는 날짜에<br>촬영을 진행하실 수 있습니다.</p>
+    <div class="cta-banner__actions fade-in delay-2">
+      <a href="reservation.html" class="btn btn--white">예약하기</a>
+      <a href="contact.html" class="btn btn--ghost">문의하기</a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 푸터 ──────────────────────────────────────────────────── -->
+<footer class="footer">
+  <div class="footer__inner">
+    <div>
+      <span class="footer__brand-en">PAGE STUDIO</span>
+      <span class="footer__brand-ko">페이지스튜디오</span>
+      <p class="footer__mission">감성을 담은 사진으로 고객의 이야기에<br>한 장의 페이지를 더합니다.</p>
+    </div>
+    <div>
+      <p class="footer__col-title">Info</p>
+      <div class="footer__info-line">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <span>부산 금정구 (부산대 인근)</span>
+      </div>
+      <div class="footer__info-line">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span>화–일 10:00 ~ 19:00 / 월 휴무</span>
+      </div>
+    </div>
+    <div>
+      <p class="footer__col-title">Follow</p>
+      <div class="footer__social">
+        <a href="#" class="footer__social-link" aria-label="인스타그램">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          Instagram
+        </a>
+        <a href="#" class="footer__social-link" aria-label="카카오 채널">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3C6.477 3 2 6.82 2 11.5c0 2.9 1.73 5.47 4.36 7.06L5.5 21l3.2-1.73C9.7 19.72 10.83 20 12 20c5.523 0 10-3.82 10-8.5S17.523 3 12 3z"/></svg>
+          카카오 채널
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <span class="footer__slogan">당신이라는 이야기에 한 장을 더한다</span>
+    <span class="footer__copy">© 2025 PAGE STUDIO. All rights reserved.</span>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+  // 가격 카드 동적 렌더링
+  fetch('data/prices.json')
+    .then(r => r.json())
+    .then(items => {
+      const grid = document.getElementById('pricesGrid');
+      if (!grid) return;
+      grid.innerHTML = items.sort((a, b) => a.order - b.order).map((item, i) => `
+        <div class="price-card${item.featured ? ' price-card--featured' : ''} fade-in delay-${(i % 3) + 1}">
+          <h3 class="price-card__name">${item.name}</h3>
+          <div class="price-card__price-wrap">
+            <div class="price-card__price">
+              ${item.price}<span class="price-card__price-unit">원~</span>
+            </div>
+            <div class="price-card__meta">
+              <span class="price-card__tag">⏱ ${item.duration}</span>
+              <span class="price-card__tag">✦ ${item.retouched}</span>
+              <span class="price-card__tag">📦 ${item.delivery}</span>
+            </div>
+          </div>
+          <ul class="price-card__includes">
+            ${item.includes.map(inc => `<li>${inc}</li>`).join('')}
+          </ul>
+          <div class="price-card__cta">
+            <a href="reservation.html?package=${encodeURIComponent(item.name)}" class="btn ${item.featured ? 'btn--primary' : 'btn--outline'} btn--sm" style="width:100%;">이 상품으로 예약</a>
+          </div>
+        </div>
+      `).join('');
+    })
+    .catch(() => {});
+
+  // FAQ 동적 렌더링
+  fetch('data/site.json')
+    .then(r => r.json())
+    .then(data => {
+      const container = document.getElementById('faqAccordion');
+      if (!container || !data.faq) return;
+      container.innerHTML = data.faq.slice(0, 4).map((item, i) => `
+        <div class="accordion__item${i === 0 ? ' open' : ''}">
+          <button class="accordion__trigger" aria-expanded="${i === 0}">
+            <span class="accordion__question">${item.q}</span>
+            <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+          <div class="accordion__body">
+            <p class="accordion__answer">${item.a}</p>
+          </div>
+        </div>
+      `).join('');
+      // 아코디언 재초기화
+      container.querySelectorAll('.accordion__trigger').forEach(trigger => {
+        trigger.addEventListener('click', () => {
+          const item = trigger.closest('.accordion__item');
+          const isOpen = item.classList.contains('open');
+          item.closest('.accordion').querySelectorAll('.accordion__item').forEach(i => i.classList.remove('open'));
+          if (!isOpen) item.classList.add('open');
+        });
+      });
+    })
+    .catch(() => {});
+
+  // 반응형: notes-grid 모바일 처리
+  if (window.innerWidth < 768) {
+    document.querySelector('.notes-grid')?.setAttribute('style', 'display:block;');
+  }
+</script>
+<style>
+  @media (max-width: 768px) {
+    .notes-grid { display: block !important; }
+    .notes-grid > div:first-child { margin-bottom: 56px; }
+    .prices__grid { grid-template-columns: 1fr !important; }
+  }
+  @media (max-width: 960px) {
+    .prices__grid { grid-template-columns: repeat(2, 1fr) !important; }
+  }
+</style>
+</body>
+</html>

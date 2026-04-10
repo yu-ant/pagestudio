@@ -1,0 +1,15 @@
+# 백업 스크립트는 로컬용이므로 제외
+backup-to-nas.ps1
+
+# 예약/연락처 데이터는 민감 정보이므로 제외
+data/reservations.json
+data/contacts.json
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 에디터
+.vscode/
+*.swp

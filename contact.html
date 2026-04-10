@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>오시는길 | PAGE STUDIO 페이지스튜디오</title>
+  <meta name="description" content="페이지스튜디오 위치 안내. 부산 금정구 부산대 인근. 운영시간 화~일 10:00~19:00." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/components.css" />
+</head>
+<body>
+
+<!-- ─── 네비게이션 ─────────────────────────────────────────── -->
+<header class="nav scrolled" id="nav">
+  <div class="nav__inner">
+    <a href="index.html" class="nav__logo">
+      <span class="nav__logo-en">PAGE STUDIO</span>
+      <span class="nav__logo-ko">페이지스튜디오</span>
+    </a>
+    <nav class="nav__menu" aria-label="주 메뉴">
+      <a href="index.html" class="nav__link">홈</a>
+      <a href="gallery.html" class="nav__link">갤러리</a>
+      <a href="price.html" class="nav__link">가격안내</a>
+      <a href="reservation.html" class="nav__link">예약하기</a>
+      <a href="contact.html" class="nav__link">오시는길</a>
+    </nav>
+    <button class="nav__hamburger" aria-label="메뉴 열기" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+<div class="nav__drawer" aria-hidden="true">
+  <a href="index.html" class="nav__link">홈</a>
+  <a href="gallery.html" class="nav__link">갤러리</a>
+  <a href="price.html" class="nav__link">가격안내</a>
+  <a href="reservation.html" class="nav__link">예약하기</a>
+  <a href="contact.html" class="nav__link">오시는길</a>
+</div>
+
+<!-- ─── 페이지 헤더 ─────────────────────────────────────────── -->
+<div class="page-header">
+  <span class="page-header__label">Location</span>
+  <h1 class="page-header__title">오시는 길</h1>
+  <p class="page-header__desc">부산 금정구 부산대 인근에 위치해 있습니다.<br>예약 확정 시 상세 주소를 안내 드립니다.</p>
+</div>
+
+<!-- ─── 지도 & 정보 ──────────────────────────────────────────── -->
+<section class="section map-section section--bg" id="map">
+  <div class="container">
+    <div class="map-section__grid fade-in">
+      <!-- 지도 임베드 영역 -->
+      <div class="map-section__embed">
+        <!--
+          실제 운영 시 아래 iframe의 src를 카카오맵 또는 네이버 지도
+          공유 링크로 교체하세요.
+          예) https://map.naver.com/p/embed?mapType=...
+        -->
+        <div style="width:100%;height:100%;min-height:420px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(247,216,200,0.2);color:var(--text-muted);gap:14px;text-align:center;padding:24px;">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--color-primary);opacity:0.5;" aria-hidden="true">
+            <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+          <p style="font-family:var(--font-sans);font-size:0.9rem;line-height:1.7;">
+            부산 금정구 (부산대 인근)<br>
+            <span style="font-size:0.8rem;opacity:0.7;">예약 확정 시 정확한 주소 안내</span>
+          </p>
+          <a href="https://map.naver.com/v5/search/부산+금정구+부산대" target="_blank" rel="noopener noreferrer" class="btn btn--outline btn--sm">네이버 지도로 검색</a>
+        </div>
+      </div>
+
+      <!-- 연락처 정보 -->
+      <div class="map-section__info">
+        <div class="map-info-item">
+          <div class="map-info-item__icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div>
+            <span class="map-info-item__label">주소</span>
+            <p class="map-info-item__text">부산광역시 금정구<br>(부산대학교 인근)<br><small style="color:var(--text-muted);font-size:0.8em;">* 예약 확정 후 상세 주소 개별 안내</small></p>
+          </div>
+        </div>
+
+        <div class="map-info-item">
+          <div class="map-info-item__icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div>
+            <span class="map-info-item__label">운영시간</span>
+            <p class="map-info-item__text">
+              화 · 수 · 목 · 금 · 토 · 일<br>
+              오전 10:00 ~ 오후 7:00<br>
+              <strong style="color:#c0392b;font-size:0.875em;font-weight:500;">월요일 휴무</strong>
+            </p>
+          </div>
+        </div>
+
+        <div class="map-info-item">
+          <div class="map-info-item__icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.65 3.18 2 2 0 0 1 3.62 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.54a16 16 0 0 0 5.55 5.55l.95-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 15.22"/></svg>
+          </div>
+          <div>
+            <span class="map-info-item__label">전화</span>
+            <p class="map-info-item__text"><a href="tel:01000000000" style="color:inherit;">010-0000-0000</a></p>
+          </div>
+        </div>
+
+        <div class="map-info-item">
+          <div class="map-info-item__icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div>
+            <span class="map-info-item__label">이메일</span>
+            <p class="map-info-item__text">예약 문의는 전화 또는<br>인스타그램 DM으로 연락 주세요.</p>
+          </div>
+        </div>
+
+        <div class="map-info-item">
+          <div class="map-info-item__icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+          </div>
+          <div>
+            <span class="map-info-item__label">주차</span>
+            <p class="map-info-item__text">전용 주차장 없음<br>인근 공영주차장 이용 가능<br><small style="color:var(--text-muted);font-size:0.8em;">* 예약 확정 시 주차 안내</small></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 교통 안내 ─────────────────────────────────────────────── -->
+<section class="section section--white" id="transport">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:52px;" class="fade-in">
+      <span class="section-eyebrow">How to Get Here</span>
+      <h2 class="section-title">교통 안내</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:32px;" class="transport-grid fade-in">
+      <!-- 지하철 -->
+      <div style="padding:36px 28px;background:var(--color-bg);border-radius:var(--radius);border:1px solid rgba(234,201,183,0.5);">
+        <div style="width:48px;height:48px;border-radius:50%;background:rgba(200,220,235,0.3);display:flex;align-items:center;justify-content:center;margin-bottom:20px;color:var(--color-primary);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="14" rx="2"/><path d="M4 17h16M8 21l4-4 4 4"/><circle cx="9" cy="10" r="1" fill="currentColor"/><circle cx="15" cy="10" r="1" fill="currentColor"/></svg>
+        </div>
+        <h3 style="font-family:var(--font-sans);font-size:1rem;font-weight:700;color:var(--text-primary);margin-bottom:10px;">지하철</h3>
+        <p style="font-family:var(--font-serif);font-size:0.9rem;color:var(--text-muted);line-height:1.75;">부산 지하철 1호선<br>부산대역 하차<br>도보 5~10분 거리</p>
+      </div>
+      <!-- 버스 -->
+      <div style="padding:36px 28px;background:var(--color-bg);border-radius:var(--radius);border:1px solid rgba(234,201,183,0.5);">
+        <div style="width:48px;height:48px;border-radius:50%;background:rgba(200,220,235,0.3);display:flex;align-items:center;justify-content:center;margin-bottom:20px;color:var(--color-primary);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6v6"/><path d="M16 6v6"/><path d="M2 12h20"/><rect x="2" y="3" width="20" height="16" rx="2"/><path d="M6 19v2M18 19v2"/></svg>
+        </div>
+        <h3 style="font-family:var(--font-sans);font-size:1rem;font-weight:700;color:var(--text-primary);margin-bottom:10px;">버스</h3>
+        <p style="font-family:var(--font-serif);font-size:0.9rem;color:var(--text-muted);line-height:1.75;">금정구 방면 버스 이용<br>부산대학교 인근 정류장 하차<br>예약 확정 후 상세 안내</p>
+      </div>
+      <!-- 자가용 -->
+      <div style="padding:36px 28px;background:var(--color-bg);border-radius:var(--radius);border:1px solid rgba(234,201,183,0.5);">
+        <div style="width:48px;height:48px;border-radius:50%;background:rgba(200,220,235,0.3);display:flex;align-items:center;justify-content:center;margin-bottom:20px;color:var(--color-primary);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v5h-1"/><circle cx="7.5" cy="17.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>
+        </div>
+        <h3 style="font-family:var(--font-sans);font-size:1rem;font-weight:700;color:var(--text-primary);margin-bottom:10px;">자가용</h3>
+        <p style="font-family:var(--font-serif);font-size:0.9rem;color:var(--text-muted);line-height:1.75;">인근 공영주차장 이용<br>(전용 주차장 없음)<br>예약 확정 후 주차 안내</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 문의 폼 ──────────────────────────────────────────────── -->
+<section class="section section--bg" id="inquiry">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:52px;" class="fade-in">
+      <span class="section-eyebrow">Contact</span>
+      <h2 class="section-title">문의하기</h2>
+      <p class="section-desc" style="margin:0 auto;">예약 전 궁금한 점이 있으시면 문의해 주세요.<br>영업일 기준 1일 이내 답변 드립니다.</p>
+    </div>
+    <div class="form-section fade-in">
+      <!-- 성공 메시지 -->
+      <div class="form-success" id="inquirySuccess">
+        <div class="form-success__icon">
+          <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="32" cy="32" r="28"/>
+            <path d="M20 32l8 8 16-16"/>
+          </svg>
+        </div>
+        <h2 class="form-success__title">문의가 접수되었습니다</h2>
+        <p class="form-success__desc">빠른 시간 내에 답변 드리겠습니다.<br>촬영 예약은 예약 페이지에서 진행해 주세요.</p>
+        <a href="reservation.html" class="btn btn--primary" style="margin-top:28px;">예약하러 가기</a>
+      </div>
+
+      <form class="form" id="inquiryForm" novalidate>
+        <div class="form-row">
+          <div class="form-field">
+            <label class="form-label form-label--required" for="inq-name">이름</label>
+            <input class="form-input" type="text" id="inq-name" name="name" placeholder="홍길동" required />
+          </div>
+          <div class="form-field">
+            <label class="form-label form-label--required" for="inq-phone">연락처</label>
+            <input class="form-input" type="tel" id="inq-phone" name="phone" placeholder="010-0000-0000" required />
+          </div>
+        </div>
+        <div class="form-field">
+          <label class="form-label form-label--required" for="inq-subject">문의 유형</label>
+          <select class="form-select" id="inq-subject" name="subject" required>
+            <option value="" disabled selected>문의 유형 선택</option>
+            <option value="가격문의">가격 문의</option>
+            <option value="예약변경">예약 변경/취소</option>
+            <option value="단체촬영">단체 촬영 협의</option>
+            <option value="기타">기타</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label class="form-label form-label--required" for="inq-message">문의 내용</label>
+          <textarea class="form-textarea" id="inq-message" name="message" placeholder="문의 내용을 자유롭게 작성해 주세요." required></textarea>
+        </div>
+        <div class="form-submit">
+          <button type="submit" class="btn btn--primary">문의 보내기</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CTA 배너 ─────────────────────────────────────────────── -->
+<section class="cta-banner">
+  <div class="container">
+    <span class="cta-banner__en">Book Your Session</span>
+    <h2 class="cta-banner__title fade-in">준비가 되셨다면 예약하세요</h2>
+    <p class="cta-banner__desc fade-in delay-1">원하는 날짜와 상품을 선택해<br>나만의 한 페이지를 만들어 보세요.</p>
+    <div class="cta-banner__actions fade-in delay-2">
+      <a href="reservation.html" class="btn btn--white">예약하기</a>
+      <a href="price.html" class="btn btn--ghost">가격 보기</a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 푸터 ──────────────────────────────────────────────────── -->
+<footer class="footer">
+  <div class="footer__inner">
+    <div>
+      <span class="footer__brand-en">PAGE STUDIO</span>
+      <span class="footer__brand-ko">페이지스튜디오</span>
+      <p class="footer__mission">감성을 담은 사진으로 고객의 이야기에<br>한 장의 페이지를 더합니다.</p>
+    </div>
+    <div>
+      <p class="footer__col-title">Info</p>
+      <div class="footer__info-line">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <span>부산 금정구 (부산대 인근)</span>
+      </div>
+      <div class="footer__info-line">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span>화–일 10:00 ~ 19:00 / 월 휴무</span>
+      </div>
+    </div>
+    <div>
+      <p class="footer__col-title">Follow</p>
+      <div class="footer__social">
+        <a href="#" class="footer__social-link" aria-label="인스타그램">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          Instagram
+        </a>
+        <a href="#" class="footer__social-link" aria-label="카카오 채널">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3C6.477 3 2 6.82 2 11.5c0 2.9 1.73 5.47 4.36 7.06L5.5 21l3.2-1.73C9.7 19.72 10.83 20 12 20c5.523 0 10-3.82 10-8.5S17.523 3 12 3z"/></svg>
+          카카오 채널
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <span class="footer__slogan">당신이라는 이야기에 한 장을 더한다</span>
+    <span class="footer__copy">© 2025 PAGE STUDIO. All rights reserved.</span>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+  // 문의 폼 처리
+  const inquiryForm = document.getElementById('inquiryForm');
+  const inquirySuccess = document.getElementById('inquirySuccess');
+  if (inquiryForm) {
+    inquiryForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const required = inquiryForm.querySelectorAll('[required]');
+      let valid = true;
+      required.forEach(f => {
+        if (!f.value.trim()) { f.style.borderColor = '#e74c3c'; valid = false; }
+        else f.style.borderColor = '';
+      });
+      if (!valid) { alert('필수 항목을 모두 입력해 주세요.'); return; }
+      const btn = inquiryForm.querySelector('[type="submit"]');
+      btn.disabled = true;
+      btn.textContent = '전송 중...';
+      const data = Object.fromEntries(new FormData(inquiryForm));
+      data.id = Date.now();
+      data.submittedAt = new Date().toISOString();
+      const existing = JSON.parse(localStorage.getItem('ps_contacts') || '[]');
+      existing.push(data);
+      localStorage.setItem('ps_contacts', JSON.stringify(existing));
+      await new Promise(r => setTimeout(r, 600));
+      inquiryForm.style.display = 'none';
+      inquirySuccess.classList.add('show');
+    });
+  }
+</script>
+<style>
+  @media (max-width: 768px) {
+    .transport-grid { grid-template-columns: 1fr !important; }
+  }
+  @media (max-width: 960px) {
+    .transport-grid { grid-template-columns: repeat(2,1fr) !important; }
+    .map-section__grid { grid-template-columns: 1fr !important; }
+  }
+  @media (max-width: 640px) {
+    .form-row { grid-template-columns: 1fr !important; }
+  }
+</style>
+</body>
+</html>

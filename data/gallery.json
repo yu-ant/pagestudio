@@ -1,0 +1,10 @@
+[
+  { "src": "images/gallery-01.jpg", "alt": "프로필 촬영 1", "category": "profile" },
+  { "src": "images/gallery-02.jpg", "alt": "프로필 촬영 2", "category": "profile" },
+  { "src": "images/gallery-03.jpg", "alt": "아티스트 프로필", "category": "artist" },
+  { "src": "images/gallery-04.jpg", "alt": "아티스트 프로필 2", "category": "artist" },
+  { "src": "images/gallery-05.jpg", "alt": "단체 사진", "category": "group" },
+  { "src": "images/gallery-06.jpg", "alt": "프로필 촬영 3", "category": "profile" },
+  { "src": "images/gallery-07.jpg", "alt": "셀프 부스 촬영", "category": "selfbooth" },
+  { "src": "images/gallery-08.jpg", "alt": "아티스트 프로필 3", "category": "artist" }
+]
