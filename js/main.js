@@ -152,44 +152,6 @@
   });
 })();
 
-/* ─── 예약 폼 (PocketBase 연동) ────────────────────────────── */
-(function initReservationForm() {
-  const form = document.getElementById('reservationForm');
-  if (!form) return;
-  const success = document.querySelector('.form-success');
-
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const btn = form.querySelector('[type="submit"]');
-    btn.disabled = true;
-    btn.textContent = '전송 중...';
-
-    const raw = Object.fromEntries(new FormData(form));
-    const data = {
-      name: raw.name,
-      phone: raw.phone,
-      package: raw.package,
-      date: raw.date,
-      time: raw.time,
-      people: raw.people || '1인',
-      message: raw.message || '',
-      status: 'new'
-    };
-
-    try {
-      await window.pb.collection('reservations').create(data);
-      form.style.display = 'none';
-      if (success) success.classList.add('show');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } catch (err) {
-      console.error(err);
-      alert('전송 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
-      btn.disabled = false;
-      btn.textContent = '예약 신청하기';
-    }
-  });
-})();
-
 /* ─── 날짜 최솟값 설정 (예약 폼) ───────────────────────────── */
 (function setMinDate() {
   const dateInput = document.getElementById('date');

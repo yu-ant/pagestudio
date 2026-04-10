@@ -161,59 +161,39 @@
   <span class="lightbox__counter"></span>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/pocketbase/dist/pocketbase.umd.js"></script>
-<script src="js/pb.js"></script>
 <script src="js/main.js"></script>
 <script>
-  const grid = document.getElementById('galleryGrid');
-  const emptyMsg = document.getElementById('galleryEmpty');
-
-  function renderGallery(items) {
-    if (!grid) return;
-    if (!items.length) {
-      grid.innerHTML = Array.from({length: 8}, () => '<div class="gallery__placeholder"></div>').join('');
-      return;
-    }
-    grid.innerHTML = items.map((item, i) => {
-      const src = pbFile(item, item.image, '600x600');
-      const full = pbFile(item, item.image);
-      return `
+  fetch('data/gallery.json')
+    .then(r => r.json())
+    .then(items => {
+      const grid = document.getElementById('galleryGrid');
+      const empty = document.getElementById('galleryEmpty');
+      if (!grid) return;
+      if (!items.length) {
+        grid.innerHTML = Array.from({length: 8}, () => `<div class="gallery__placeholder"></div>`).join('');
+        return;
+      }
+      grid.innerHTML = items.map((item, i) => `
         <div class="gallery__item fade-in delay-${(i % 4) + 1}"
-             data-src="${full}" data-alt="${item.alt || ''}"
-             data-category="${item.category || 'profile'}"
-             role="button" tabindex="0" aria-label="${item.alt || ''} 크게 보기">
-          <img src="${src}" alt="${item.alt || ''}" loading="lazy"
+             data-src="${item.src}" data-alt="${item.alt}"
+             data-category="${item.category}"
+             role="button" tabindex="0" aria-label="${item.alt} 크게 보기">
+          <img src="${item.src}" alt="${item.alt}" loading="lazy"
                onerror="this.parentElement.innerHTML='<div class=\\'gallery__placeholder\\' style=\\'aspect-ratio:2/3\\'></div>'" />
           <div class="gallery__item-overlay">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35M11 8v6M8 11h6"/></svg>
           </div>
-        </div>`;
-    }).join('');
-    window.dispatchEvent(new Event('galleryReady'));
-    grid.querySelectorAll('.gallery__item').forEach(el => {
-      el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') el.click(); });
-    });
-  }
-
-  pb.collection('gallery').getFullList({ sort: 'sort_order' })
-    .then(items => renderGallery(items))
-    .catch(() => {
-      fetch('data/gallery.json').then(r => r.json()).then(items => {
-        if (!grid) return;
-        grid.innerHTML = items.map((item, i) => `
-          <div class="gallery__item fade-in delay-${(i % 4) + 1}"
-               data-src="${item.src}" data-alt="${item.alt}"
-               data-category="${item.category}" role="button" tabindex="0">
-            <img src="${item.src}" alt="${item.alt}" loading="lazy" />
-            <div class="gallery__item-overlay"></div>
-          </div>`).join('');
-        window.dispatchEvent(new Event('galleryReady'));
-      }).catch(() => {
-        if (grid) grid.innerHTML = Array.from({length: 8}, () => '<div class="gallery__placeholder"></div>').join('');
+        </div>`).join('');
+      window.dispatchEvent(new Event('galleryReady'));
+      grid.querySelectorAll('.gallery__item').forEach(el => {
+        el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') el.click(); });
       });
+    })
+    .catch(() => {
+      const grid = document.getElementById('galleryGrid');
+      if (grid) grid.innerHTML = Array.from({length: 8}, () => `<div class="gallery__placeholder"></div>`).join('');
     });
 
-  // 필터
   document.getElementById('galleryFilters')?.addEventListener('click', e => {
     const btn = e.target.closest('.gallery__filter-btn');
     if (!btn) return;
@@ -226,7 +206,8 @@
       item.style.display = show ? '' : 'none';
       if (show) count++;
     });
-    if (emptyMsg) emptyMsg.style.display = count === 0 ? 'block' : 'none';
+    const empty = document.getElementById('galleryEmpty');
+    if (empty) empty.style.display = count === 0 ? 'block' : 'none';
   });
 </script>
 </body>

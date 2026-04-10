@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(del \"Z:\\\\페이지홈페이지\\\\js\\\\pb.js\")",
+      "Bash(del \"Z:\\\\페이지홈페이지\\\\seed-pocketbase.ps1\")"
+    ]
+  }
+}

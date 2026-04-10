@@ -222,8 +222,6 @@
   </div>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/pocketbase/dist/pocketbase.umd.js"></script>
-<script src="js/pb.js"></script>
 <script src="js/main.js"></script>
 <script>
   // URL 파라미터에서 상품 자동 선택
@@ -238,23 +236,21 @@
     }
   })();
 
-  // 폼 유효성 검사 + 제출
+  // 폼 유효성 검사 + 제출 (Web3Forms)
   const form = document.getElementById('reservationForm');
   const success = document.getElementById('formSuccess');
   if (form) {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      // 간단 유효성
       const required = form.querySelectorAll('[required]');
       let valid = true;
       required.forEach(field => {
-        if (!field.value.trim() && field.type !== 'checkbox') {
-          field.style.borderColor = '#e74c3c';
-          valid = false;
-        } else if (field.type === 'checkbox' && !field.checked) {
-          valid = false;
+        if (field.type === 'checkbox') {
+          if (!field.checked) { valid = false; field.style.outline = '2px solid #e74c3c'; }
+          else field.style.outline = '';
         } else {
-          field.style.borderColor = '';
+          if (!field.value.trim()) { field.style.borderColor = '#e74c3c'; valid = false; }
+          else field.style.borderColor = '';
         }
       });
       if (!valid) {
@@ -266,27 +262,38 @@
       btn.textContent = '전송 중...';
 
       const raw = Object.fromEntries(new FormData(form));
+      const body = {
+        access_key: 'd37a5909-f674-4a23-88c9-c97dacbed33c',
+        subject: '[페이지스튜디오] 예약 신청 — ' + raw.name,
+        from_name: raw.name,
+        name: raw.name,
+        phone: raw.phone,
+        package: raw.package,
+        date: raw.date,
+        time: raw.time,
+        people: raw.people || '1인',
+        message: raw.message || ''
+      };
       try {
-        await window.pb.collection('reservations').create({
-          name: raw.name,
-          phone: raw.phone,
-          package: raw.package,
-          date: raw.date,
-          time: raw.time,
-          people: raw.people || '1인',
-          message: raw.message || '',
-          status: 'new'
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify(body)
         });
-        form.style.display = 'none';
-        success.classList.add('show');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        const json = await res.json();
+        if (json.success) {
+          form.style.display = 'none';
+          success.classList.add('show');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          throw new Error(json.message || '전송 실패');
+        }
       } catch (err) {
         console.error(err);
         alert('전송 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
         btn.disabled = false;
         btn.textContent = '예약 신청하기';
       }
-      return;
     });
   }
 
