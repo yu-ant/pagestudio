@@ -152,11 +152,10 @@
   });
 })();
 
-/* ─── 예약 폼 ───────────────────────────────────────────────── */
+/* ─── 예약 폼 (PocketBase 연동) ────────────────────────────── */
 (function initReservationForm() {
   const form = document.getElementById('reservationForm');
   if (!form) return;
-
   const success = document.querySelector('.form-success');
 
   form.addEventListener('submit', async (e) => {
@@ -165,20 +164,29 @@
     btn.disabled = true;
     btn.textContent = '전송 중...';
 
-    // 로컬 환경 — localStorage 저장 시뮬레이션
-    const data = Object.fromEntries(new FormData(form));
-    data.id = Date.now();
-    data.submittedAt = new Date().toISOString();
+    const raw = Object.fromEntries(new FormData(form));
+    const data = {
+      name: raw.name,
+      phone: raw.phone,
+      package: raw.package,
+      date: raw.date,
+      time: raw.time,
+      people: raw.people || '1인',
+      message: raw.message || '',
+      status: 'new'
+    };
 
-    const existing = JSON.parse(localStorage.getItem('ps_reservations') || '[]');
-    existing.push(data);
-    localStorage.setItem('ps_reservations', JSON.stringify(existing));
-
-    await new Promise(r => setTimeout(r, 600)); // UX 딜레이
-
-    form.style.display = 'none';
-    if (success) success.classList.add('show');
-    btn.disabled = false;
+    try {
+      await window.pb.collection('reservations').create(data);
+      form.style.display = 'none';
+      if (success) success.classList.add('show');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (err) {
+      console.error(err);
+      alert('전송 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
+      btn.disabled = false;
+      btn.textContent = '예약 신청하기';
+    }
   });
 })();
 

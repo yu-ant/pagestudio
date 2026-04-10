@@ -222,6 +222,8 @@
   </div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/pocketbase/dist/pocketbase.umd.js"></script>
+<script src="js/pb.js"></script>
 <script src="js/main.js"></script>
 <script>
   // URL 파라미터에서 상품 자동 선택
@@ -263,17 +265,28 @@
       btn.disabled = true;
       btn.textContent = '전송 중...';
 
-      const data = Object.fromEntries(new FormData(form));
-      data.id = Date.now();
-      data.submittedAt = new Date().toISOString();
-      const existing = JSON.parse(localStorage.getItem('ps_reservations') || '[]');
-      existing.push(data);
-      localStorage.setItem('ps_reservations', JSON.stringify(existing));
-
-      await new Promise(r => setTimeout(r, 700));
-      form.style.display = 'none';
-      success.classList.add('show');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      const raw = Object.fromEntries(new FormData(form));
+      try {
+        await window.pb.collection('reservations').create({
+          name: raw.name,
+          phone: raw.phone,
+          package: raw.package,
+          date: raw.date,
+          time: raw.time,
+          people: raw.people || '1인',
+          message: raw.message || '',
+          status: 'new'
+        });
+        form.style.display = 'none';
+        success.classList.add('show');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } catch (err) {
+        console.error(err);
+        alert('전송 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
+        btn.disabled = false;
+        btn.textContent = '예약 신청하기';
+      }
+      return;
     });
   }
 

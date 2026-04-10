@@ -167,68 +167,64 @@
   </div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/pocketbase/dist/pocketbase.umd.js"></script>
+<script src="js/pb.js"></script>
 <script src="js/main.js"></script>
 <script>
-  // 가격 카드 동적 렌더링
-  fetch('data/prices.json')
-    .then(r => r.json())
-    .then(items => {
-      const grid = document.getElementById('pricesGrid');
-      if (!grid) return;
-      grid.innerHTML = items.sort((a, b) => a.order - b.order).map((item, i) => `
-        <div class="price-card${item.featured ? ' price-card--featured' : ''} fade-in delay-${(i % 3) + 1}">
-          <h3 class="price-card__name">${item.name}</h3>
-          <div class="price-card__price-wrap">
-            <div class="price-card__price">
-              ${item.price}<span class="price-card__price-unit">원~</span>
-            </div>
-            <div class="price-card__meta">
-              <span class="price-card__tag">⏱ ${item.duration}</span>
-              <span class="price-card__tag">✦ ${item.retouched}</span>
-              <span class="price-card__tag">📦 ${item.delivery}</span>
-            </div>
-          </div>
-          <ul class="price-card__includes">
-            ${item.includes.map(inc => `<li>${inc}</li>`).join('')}
-          </ul>
-          <div class="price-card__cta">
-            <a href="reservation.html?package=${encodeURIComponent(item.name)}" class="btn ${item.featured ? 'btn--primary' : 'btn--outline'} btn--sm" style="width:100%;">이 상품으로 예약</a>
+  function renderPrices(items) {
+    const grid = document.getElementById('pricesGrid');
+    if (!grid) return;
+    grid.innerHTML = items.sort((a, b) => (a.sort_order || a.order || 0) - (b.sort_order || b.order || 0)).map((item, i) => `
+      <div class="price-card${item.featured ? ' price-card--featured' : ''} fade-in delay-${(i % 3) + 1}">
+        <h3 class="price-card__name">${item.name}</h3>
+        <div class="price-card__price-wrap">
+          <div class="price-card__price">${item.price}<span class="price-card__price-unit">원~</span></div>
+          <div class="price-card__meta">
+            <span class="price-card__tag">⏱ ${item.duration}</span>
+            <span class="price-card__tag">✦ ${item.retouched}</span>
+            <span class="price-card__tag">📦 ${item.delivery}</span>
           </div>
         </div>
-      `).join('');
-    })
-    .catch(() => {});
+        <ul class="price-card__includes">
+          ${(Array.isArray(item.includes) ? item.includes : JSON.parse(item.includes || '[]')).map(inc => `<li>${inc}</li>`).join('')}
+        </ul>
+        <div class="price-card__cta">
+          <a href="reservation.html?package=${encodeURIComponent(item.name)}" class="btn ${item.featured ? 'btn--primary' : 'btn--outline'} btn--sm" style="width:100%;">이 상품으로 예약</a>
+        </div>
+      </div>`).join('');
+  }
 
-  // FAQ 동적 렌더링
-  fetch('data/site.json')
-    .then(r => r.json())
-    .then(data => {
-      const container = document.getElementById('faqAccordion');
-      if (!container || !data.faq) return;
-      container.innerHTML = data.faq.slice(0, 4).map((item, i) => `
-        <div class="accordion__item${i === 0 ? ' open' : ''}">
-          <button class="accordion__trigger" aria-expanded="${i === 0}">
-            <span class="accordion__question">${item.q}</span>
-            <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </button>
-          <div class="accordion__body">
-            <p class="accordion__answer">${item.a}</p>
-          </div>
-        </div>
-      `).join('');
-      // 아코디언 재초기화
-      container.querySelectorAll('.accordion__trigger').forEach(trigger => {
-        trigger.addEventListener('click', () => {
-          const item = trigger.closest('.accordion__item');
-          const isOpen = item.classList.contains('open');
-          item.closest('.accordion').querySelectorAll('.accordion__item').forEach(i => i.classList.remove('open'));
-          if (!isOpen) item.classList.add('open');
-        });
+  function renderFaq(items, containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    container.innerHTML = items.slice(0, 4).map((item, i) => `
+      <div class="accordion__item${i === 0 ? ' open' : ''}">
+        <button class="accordion__trigger" aria-expanded="${i === 0}">
+          <span class="accordion__question">${item.question || item.q}</span>
+          <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="accordion__body"><p class="accordion__answer">${item.answer || item.a}</p></div>
+      </div>`).join('');
+    container.querySelectorAll('.accordion__trigger').forEach(trigger => {
+      trigger.addEventListener('click', () => {
+        const item = trigger.closest('.accordion__item');
+        const isOpen = item.classList.contains('open');
+        item.closest('.accordion').querySelectorAll('.accordion__item').forEach(i => i.classList.remove('open'));
+        if (!isOpen) item.classList.add('open');
       });
-    })
-    .catch(() => {});
+    });
+  }
 
-  // 반응형: notes-grid 모바일 처리
+  // 가격
+  pb.collection('prices').getFullList({ sort: 'sort_order' })
+    .then(items => renderPrices(items))
+    .catch(() => fetch('data/prices.json').then(r => r.json()).then(renderPrices).catch(() => {}));
+
+  // FAQ
+  pb.collection('faq').getFullList({ sort: 'sort_order' })
+    .then(items => renderFaq(items, 'faqAccordion'))
+    .catch(() => fetch('data/site.json').then(r => r.json()).then(d => renderFaq(d.faq || [], 'faqAccordion')).catch(() => {}));
+
   if (window.innerWidth < 768) {
     document.querySelector('.notes-grid')?.setAttribute('style', 'display:block;');
   }

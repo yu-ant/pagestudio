@@ -1,5 +1,7 @@
-# 백업 스크립트는 로컬용이므로 제외
+# 로컬 전용 스크립트 (Git 제외)
 backup-to-nas.ps1
+watch-and-sync.ps1
+start-watcher.vbs
 
 # 예약/연락처 데이터는 민감 정보이므로 제외
 data/reservations.json
