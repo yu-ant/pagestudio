@@ -14,7 +14,7 @@
     "address": "부산 금정구 (부산대 인근)",
     "phone": "010-0000-0000",
     "email": "",
-    "hours": "화–일 10:00 ~ 19:00 / 월 휴무",
+    "hours": "월, 화, 수, 목, 금, 일요일 10 : 30 ~ 22 : 00 / 토요일 13 : 00 ~ 22 : 00",
     "parking": "전용 주차장 없음 · 인근 공영주차장 이용 가능"
   },
   "map": {
@@ -22,8 +22,8 @@
     "search_url": "https://map.naver.com/v5/search/부산+금정구+부산대"
   },
   "social": {
-    "instagram": "",
-    "kakao": ""
+    "instagram": "https://www.instagram.com/page_studio.bs/",
+    "kakao": "http://pf.kakao.com/_jxeeFn/chat"
   },
   "faq": [
     {
