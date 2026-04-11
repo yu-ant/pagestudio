@@ -75,13 +75,13 @@
 
       <div class="about__text fade-in fade-in--right delay-1">
         <span class="section-eyebrow">About Studio</span>
-        <h2 class="section-title">감성을 담은 사진으로<br>당신의 이야기를 기록합니다</h2>
+        <h2 class="section-title" data-site="about-title">감성을 담은 사진으로<br>당신의 이야기를 기록합니다</h2>
         <div class="divider"></div>
-        <p class="about__paragraph">
+        <p class="about__paragraph" data-site="about-p1">
           페이지스튜디오는 부산 금정구 부산대 인근에 위치한 감성 프로필 사진관입니다.
           정교한 조명과 세심한 디렉팅으로 고객 한 분 한 분의 진솔한 순간을 담아냅니다.
         </p>
-        <p class="about__paragraph">
+        <p class="about__paragraph" data-site="about-p2">
           아티스트·뮤지션 프로필부터 일반 프로필, 증명사진, 셀프 포토부스까지—
           어떤 촬영이든 당신만의 한 페이지가 될 수 있도록 최선을 다합니다.
         </p>
@@ -259,7 +259,7 @@
           </div>
           <div>
             <span class="map-info-item__label">주소</span>
-            <p class="map-info-item__text">부산 금정구 (부산대 인근)<br><small style="font-size:0.8em;color:var(--text-muted);">* 예약 확정 시 상세 주소 안내</small></p>
+            <p class="map-info-item__text"><span data-site="address">부산 금정구 (부산대 인근)</span><br><small style="font-size:0.8em;color:var(--text-muted);">* 예약 확정 시 상세 주소 안내</small></p>
           </div>
         </div>
         <div class="map-info-item">
@@ -268,7 +268,7 @@
           </div>
           <div>
             <span class="map-info-item__label">운영시간</span>
-            <p class="map-info-item__text">화 – 일 · 10:00 ~ 19:00<br>월요일 휴무</p>
+            <p class="map-info-item__text" data-site="hours">화 – 일 · 10:00 ~ 19:00<br>월요일 휴무</p>
           </div>
         </div>
         <div class="map-info-item">
@@ -277,7 +277,7 @@
           </div>
           <div>
             <span class="map-info-item__label">전화</span>
-            <p class="map-info-item__text"><a href="tel:01000000000" style="color:inherit;">010-0000-0000</a></p>
+            <p class="map-info-item__text"><a href="tel:01000000000" data-site="phone-link" style="color:inherit;">010-0000-0000</a></p>
           </div>
         </div>
         <a href="contact.html" class="btn btn--outline" style="align-self:flex-start;">오시는길 자세히 보기</a>
@@ -292,31 +292,31 @@
     <div>
       <span class="footer__brand-en">PAGE STUDIO</span>
       <span class="footer__brand-ko">페이지스튜디오</span>
-      <p class="footer__mission">감성을 담은 사진으로 고객의 이야기에<br>한 장의 페이지를 더합니다.</p>
+      <p class="footer__mission" data-site="mission">감성을 담은 사진으로 고객의 이야기에<br>한 장의 페이지를 더합니다.</p>
     </div>
     <div>
       <p class="footer__col-title">Info</p>
       <div class="footer__info-line">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-        <span>부산 금정구 (부산대 인근)</span>
+        <span data-site="address">부산 금정구 (부산대 인근)</span>
       </div>
       <div class="footer__info-line">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        <span>화–일 10:00 ~ 19:00 / 월 휴무</span>
+        <span data-site="hours">화–일 10:00 ~ 19:00 / 월 휴무</span>
       </div>
       <div class="footer__info-line">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.65 3.18 2 2 0 0 1 3.62 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.54a16 16 0 0 0 5.55 5.55l.95-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 15.22"/></svg>
-        <span>010-0000-0000</span>
+        <span data-site="phone">010-0000-0000</span>
       </div>
     </div>
     <div>
       <p class="footer__col-title">Follow</p>
       <div class="footer__social">
-        <a href="#" class="footer__social-link" aria-label="인스타그램">
+        <a href="#" data-site="instagram-href" class="footer__social-link" aria-label="인스타그램">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
           Instagram
         </a>
-        <a href="#" class="footer__social-link" aria-label="카카오 채널">
+        <a href="#" data-site="kakao-href" class="footer__social-link" aria-label="카카오 채널">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3C6.477 3 2 6.82 2 11.5c0 2.9 1.73 5.47 4.36 7.06L5.5 21l3.2-1.73C9.7 19.72 10.83 20 12 20c5.523 0 10-3.82 10-8.5S17.523 3 12 3z"/></svg>
           카카오 채널
         </a>
@@ -324,8 +324,9 @@
     </div>
   </div>
   <div class="footer__bottom">
-    <span class="footer__slogan">당신이라는 이야기에 한 장을 더한다</span>
+    <span class="footer__slogan" data-site="slogan">당신이라는 이야기에 한 장을 더한다</span>
     <span class="footer__copy">© 2025 PAGE STUDIO. All rights reserved.</span>
+    <a href="admin.html" class="footer__admin-link" aria-label="관리자 페이지">관리자</a>
   </div>
 </footer>
 

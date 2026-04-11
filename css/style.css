@@ -573,6 +573,16 @@ h1, h2, h3, h4, h5 {
   color: rgba(255, 255, 255, 0.35);
 }
 
+.footer__admin-link {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.2);
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  transition: color 0.2s;
+}
+.footer__admin-link:hover { color: rgba(255, 255, 255, 0.5); }
+
 /* ─── 구분선 ────────────────────────────────────────────────── */
 .divider {
   width: 40px;

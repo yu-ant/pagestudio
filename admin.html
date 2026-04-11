@@ -65,7 +65,8 @@
   </div>
 
   <div class="admin-tabs" role="tablist">
-    <button class="admin-tab active" data-pane="faq" role="tab" aria-selected="true">FAQ 관리</button>
+    <button class="admin-tab active" data-pane="siteinfo" role="tab" aria-selected="true">기본 정보</button>
+    <button class="admin-tab" data-pane="faq" role="tab" aria-selected="false">FAQ 관리</button>
     <button class="admin-tab" data-pane="prices" role="tab" aria-selected="false">가격 관리</button>
     <button class="admin-tab" data-pane="gallery" role="tab" aria-selected="false">갤러리 관리</button>
     <button class="admin-tab" data-pane="reservations" role="tab" aria-selected="false">예약 안내</button>
@@ -73,8 +74,85 @@
 
   <div class="admin-content">
 
+    <!-- ─── 기본 정보 ──── -->
+    <div class="admin-pane active" id="pane-siteinfo" role="tabpanel">
+      <div class="admin-card" style="margin-bottom:24px;">
+        <div class="admin-card__title">연락처 & 운영 정보</div>
+        <form id="siteInfoForm" style="display:grid;gap:12px;">
+          <div class="admin-grid-2">
+            <div class="admin-field">
+              <label class="admin-label">전화번호</label>
+              <input class="admin-input" type="text" id="si-phone" placeholder="010-0000-0000" />
+            </div>
+            <div class="admin-field">
+              <label class="admin-label">이메일</label>
+              <input class="admin-input" type="email" id="si-email" placeholder="studio@example.com" />
+            </div>
+            <div class="admin-field" style="grid-column:1/-1;">
+              <label class="admin-label">주소</label>
+              <input class="admin-input" type="text" id="si-address" placeholder="부산 금정구 (부산대 인근)" />
+            </div>
+            <div class="admin-field" style="grid-column:1/-1;">
+              <label class="admin-label">운영시간</label>
+              <input class="admin-input" type="text" id="si-hours" placeholder="화–일 10:00 ~ 19:00 / 월 휴무" />
+            </div>
+            <div class="admin-field">
+              <label class="admin-label">인스타그램 URL</label>
+              <input class="admin-input" type="url" id="si-instagram" placeholder="https://instagram.com/..." />
+            </div>
+            <div class="admin-field">
+              <label class="admin-label">카카오 채널 URL</label>
+              <input class="admin-input" type="url" id="si-kakao" placeholder="https://pf.kakao.com/..." />
+            </div>
+          </div>
+          <div>
+            <button type="submit" class="btn btn--primary btn--sm" id="siteInfoBtn">저장</button>
+            <span id="siteInfoStatus" style="font-family:var(--font-sans);font-size:0.85rem;margin-left:12px;color:var(--text-muted);"></span>
+          </div>
+        </form>
+      </div>
+      <div class="admin-card" style="margin-bottom:24px;">
+        <div class="admin-card__title">홈페이지 소개 글</div>
+        <form id="aboutForm" style="display:grid;gap:12px;">
+          <div class="admin-field">
+            <label class="admin-label">소개 제목</label>
+            <input class="admin-input" type="text" id="si-about-title" placeholder="감성을 담은 사진으로..." />
+          </div>
+          <div class="admin-field">
+            <label class="admin-label">소개 글 첫 번째 단락</label>
+            <textarea class="admin-textarea" id="si-about-p1" style="height:80px;"></textarea>
+          </div>
+          <div class="admin-field">
+            <label class="admin-label">소개 글 두 번째 단락</label>
+            <textarea class="admin-textarea" id="si-about-p2" style="height:80px;"></textarea>
+          </div>
+          <div>
+            <button type="submit" class="btn btn--primary btn--sm" id="aboutBtn">저장</button>
+            <span id="aboutStatus" style="font-family:var(--font-sans);font-size:0.85rem;margin-left:12px;color:var(--text-muted);"></span>
+          </div>
+        </form>
+      </div>
+      <div class="admin-card">
+        <div class="admin-card__title">슬로건 & 미션</div>
+        <form id="brandForm" style="display:grid;gap:12px;">
+          <div class="admin-field">
+            <label class="admin-label">슬로건 (푸터 하단)</label>
+            <input class="admin-input" type="text" id="si-slogan" placeholder="당신이라는 이야기에 한 장을 더한다" />
+          </div>
+          <div class="admin-field">
+            <label class="admin-label">미션 (푸터 브랜드 소개)</label>
+            <input class="admin-input" type="text" id="si-mission" placeholder="감성을 담은 사진으로..." />
+          </div>
+          <div>
+            <button type="submit" class="btn btn--primary btn--sm" id="brandBtn">저장</button>
+            <span id="brandStatus" style="font-family:var(--font-sans);font-size:0.85rem;margin-left:12px;color:var(--text-muted);"></span>
+          </div>
+        </form>
+      </div>
+    </div>
+
     <!-- ─── FAQ 관리 ──── -->
-    <div class="admin-pane active" id="pane-faq" role="tabpanel">
+    <div class="admin-pane" id="pane-faq" role="tabpanel">
       <div class="admin-card" style="margin-bottom:24px;">
         <div class="admin-card__title">FAQ 추가</div>
         <form id="faqForm" style="display:grid;gap:12px;">
@@ -393,7 +471,96 @@ async function ghPutRaw(path, b64content, message) {
 }
 
 // ─── 초기화 ──────────────────────────────────────────────────── //
-function initAdmin() { loadFaq(); loadPrices(); loadGallery(); }
+function initAdmin() { loadSiteInfo(); loadFaq(); loadPrices(); loadGallery(); }
+
+/* ── 기본 정보 ───────────────────────────────────────────────── */
+let siteData = {};
+
+async function loadSiteInfo() {
+  try {
+    siteData = await ghGet('data/site.json');
+    const c = siteData.contact || {};
+    const s = siteData.social  || {};
+    const b = siteData.brand   || {};
+    const a = siteData.about   || {};
+    document.getElementById('si-phone').value     = c.phone     || '';
+    document.getElementById('si-email').value     = c.email     || '';
+    document.getElementById('si-address').value   = c.address   || '';
+    document.getElementById('si-hours').value     = c.hours     || '';
+    document.getElementById('si-instagram').value = s.instagram || '';
+    document.getElementById('si-kakao').value     = s.kakao     || '';
+    document.getElementById('si-about-title').value = a.title   || '';
+    document.getElementById('si-about-p1').value    = a.p1      || '';
+    document.getElementById('si-about-p2').value    = a.p2      || '';
+    document.getElementById('si-slogan').value    = b.slogan    || '';
+    document.getElementById('si-mission').value   = b.mission   || '';
+  } catch(e) { console.error('사이트 정보 로드 실패', e); }
+}
+
+async function saveSiteData(patch, statusId, btnId) {
+  const btn = document.getElementById(btnId);
+  const st  = document.getElementById(statusId);
+  btn.disabled = true; st.textContent = '저장 중...';
+  try {
+    // 최신 데이터 가져온 후 병합
+    const fresh = await ghGet('data/site.json');
+    const merged = deepMerge(fresh, patch);
+    await ghPut('data/site.json', merged, '[admin] 사이트 정보 수정');
+    siteData = merged;
+    st.textContent = '저장 완료! (배포 약 1분 소요)';
+    setTimeout(() => { st.textContent = ''; }, 4000);
+  } catch(e) { st.textContent = '저장 실패: ' + e.message; }
+  finally { btn.disabled = false; }
+}
+
+function deepMerge(target, source) {
+  const result = { ...target };
+  for (const key of Object.keys(source)) {
+    if (source[key] && typeof source[key] === 'object' && !Array.isArray(source[key])) {
+      result[key] = deepMerge(target[key] || {}, source[key]);
+    } else {
+      result[key] = source[key];
+    }
+  }
+  return result;
+}
+
+document.getElementById('siteInfoForm').addEventListener('submit', e => {
+  e.preventDefault();
+  saveSiteData({
+    contact: {
+      phone:   document.getElementById('si-phone').value.trim(),
+      email:   document.getElementById('si-email').value.trim(),
+      address: document.getElementById('si-address').value.trim(),
+      hours:   document.getElementById('si-hours').value.trim()
+    },
+    social: {
+      instagram: document.getElementById('si-instagram').value.trim(),
+      kakao:     document.getElementById('si-kakao').value.trim()
+    }
+  }, 'siteInfoStatus', 'siteInfoBtn');
+});
+
+document.getElementById('aboutForm').addEventListener('submit', e => {
+  e.preventDefault();
+  saveSiteData({
+    about: {
+      title: document.getElementById('si-about-title').value.trim(),
+      p1:    document.getElementById('si-about-p1').value.trim(),
+      p2:    document.getElementById('si-about-p2').value.trim()
+    }
+  }, 'aboutStatus', 'aboutBtn');
+});
+
+document.getElementById('brandForm').addEventListener('submit', e => {
+  e.preventDefault();
+  saveSiteData({
+    brand: {
+      slogan:  document.getElementById('si-slogan').value.trim(),
+      mission: document.getElementById('si-mission').value.trim()
+    }
+  }, 'brandStatus', 'brandBtn');
+});
 
 /* ── FAQ ─────────────────────────────────────────────────────── */
 let faqData = [];

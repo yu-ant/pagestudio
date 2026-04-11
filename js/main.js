@@ -152,6 +152,58 @@
   });
 })();
 
+/* ─── 사이트 공통 정보 동적 적용 ───────────────────────────── */
+(function initSiteInfo() {
+  fetch('data/site.json')
+    .then(r => r.json())
+    .then(data => {
+      const c = data.contact || {};
+      const s = data.social  || {};
+      const b = data.brand   || {};
+      const a = data.about   || {};
+      const m = data.map     || {};
+
+      function set(sel, val) {
+        if (!val) return;
+        document.querySelectorAll(sel).forEach(el => { el.textContent = val; });
+      }
+      function setHtml(sel, val) {
+        if (!val) return;
+        document.querySelectorAll(sel).forEach(el => { el.innerHTML = val; });
+      }
+      function setAttr(sel, attr, val) {
+        if (!val) return;
+        document.querySelectorAll(sel).forEach(el => { el.setAttribute(attr, val); });
+      }
+
+      // 공통 (모든 페이지)
+      set('[data-site="address"]',  c.address);
+      set('[data-site="hours"]',    c.hours);
+      set('[data-site="phone"]',    c.phone);
+      set('[data-site="slogan"]',   b.slogan);
+      set('[data-site="mission"]',  b.mission);
+      setAttr('[data-site="instagram-href"]', 'href', s.instagram || '#');
+      setAttr('[data-site="kakao-href"]',     'href', s.kakao     || '#');
+
+      // 전화 링크 (href + text 동시)
+      document.querySelectorAll('[data-site="phone-link"]').forEach(el => {
+        if (c.phone) { el.href = 'tel:' + c.phone.replace(/-/g, ''); el.textContent = c.phone; }
+      });
+
+      // 홈 소개 섹션
+      setHtml('[data-site="about-title"]', a.title);
+      set('[data-site="about-p1"]', a.p1);
+      set('[data-site="about-p2"]', a.p2);
+
+      // 지도
+      document.querySelectorAll('[data-site="map-embed"]').forEach(el => {
+        if (m.embed_url) { el.src = m.embed_url; el.style.display = ''; }
+      });
+      setAttr('[data-site="map-search"]', 'href', m.search_url || '#');
+    })
+    .catch(() => {});
+})();
+
 /* ─── 날짜 최솟값 설정 (예약 폼) ───────────────────────────── */
 (function setMinDate() {
   const dateInput = document.getElementById('date');
