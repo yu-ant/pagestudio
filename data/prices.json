@@ -77,21 +77,5 @@
     ],
     "featured": false,
     "order": 5
-  },
-  {
-    "id": 6,
-    "name": "셀프 포토 부스",
-    "price": "20,000",
-    "duration": "30분",
-    "retouched": "무보정 (원본 그대로)",
-    "delivery": "QR 코드로 즉시 전달",
-    "includes": [
-      "30분 무제한 촬영",
-      "배경·소품 자유 선택",
-      "QR 코드로 즉시 다운로드",
-      "추가 30분 10,000원"
-    ],
-    "featured": false,
-    "order": 6
   }
 ]

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>갤러리 관리 | PAGE STUDIO</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&family=Noto+Serif+KR:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body data-admin-page="true" data-admin-sections="portfolio">
+
+  <!-- 잠금 화면 -->
+  <section class="admin-lock-screen" id="adminLockScreen">
+    <div class="admin-lock-card">
+      <p class="eyebrow">Admin Access</p>
+      <h1 id="adminLockTitle">관리자 비밀번호를 입력해 주세요</h1>
+      <p id="adminLockLead">설정된 비밀번호를 입력하면 관리자 페이지로 들어갈 수 있습니다.</p>
+      <form id="adminLockForm" class="admin-lock-form">
+        <label class="admin-field">
+          <span class="admin-field__label" id="adminPasswordLabel">비밀번호</span>
+          <input class="admin-field__input" id="adminPasswordInput" type="password" autocomplete="current-password" placeholder="비밀번호를 입력해 주세요">
+        </label>
+        <label class="admin-field admin-field--hidden" id="adminPasswordConfirmField">
+          <span class="admin-field__label">비밀번호 확인</span>
+          <input class="admin-field__input" id="adminPasswordConfirmInput" type="password" autocomplete="new-password" placeholder="비밀번호를 한 번 더 입력해 주세요">
+        </label>
+        <div class="admin-lock-actions">
+          <button class="button button--solid" type="submit" id="adminLockSubmit">입장하기</button>
+          <a class="button button--ghost" href="admin.html">관리자 메인</a>
+        </div>
+        <p class="admin-lock-error" id="adminLockError" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- 관리자 레이아웃 -->
+  <div class="admin-shell">
+
+    <!-- 사이드바 -->
+    <aside class="admin-sidebar">
+      <a class="admin-sidebar__brand" href="admin.html">
+        <span class="admin-sidebar__title">PAGE STUDIO</span>
+        <small>Admin</small>
+      </a>
+      <nav class="admin-sidebar__nav" aria-label="관리자 메뉴">
+        <a href="admin.html">대시보드</a>
+        <a href="admin-common.html">공통 정보</a>
+        <a href="admin-home.html">홈</a>
+        <a href="admin-services.html">촬영안내</a>
+        <a href="admin-gallery.html" class="is-active">갤러리</a>
+        <a href="admin-price.html">가격안내</a>
+        <a href="admin-inquiry.html">문의하기</a>
+        <a href="admin-reservation.html">예약하기</a>
+      </nav>
+      <div class="admin-sidebar__footer">
+        <a href="index.html" target="_blank" rel="noreferrer">홈페이지 보기 →</a>
+        <button type="button" id="changePassword">비밀번호 변경</button>
+      </div>
+    </aside>
+
+    <!-- 메인 콘텐츠 -->
+    <main class="admin-main">
+
+      <!-- 헤더 -->
+      <div class="admin-main__header">
+        <div>
+          <p class="eyebrow">Admin / 갤러리</p>
+          <h1>갤러리 사진 관리</h1>
+          <p>사진을 업로드하면 갤러리 페이지에 즉시 반영됩니다. 카테고리별로 분류할 수 있습니다.</p>
+        </div>
+        <div class="admin-actions">
+          <button class="button button--solid" type="button" id="saveContent">문구 저장하기</button>
+          <button class="button button--ghost" type="button" id="resetContent">기본값으로</button>
+        </div>
+      </div>
+
+      <div id="adminStatus" class="admin-status" aria-live="polite"></div>
+
+      <!-- 사진 업로드 섹션 -->
+      <section class="admin-section-card">
+        <h2 class="admin-section-title">사진 업로드</h2>
+
+        <div class="upload-controls">
+          <div class="upload-category-row">
+            <label for="uploadCategory">카테고리</label>
+            <select id="uploadCategory">
+              <option value="프로필">프로필</option>
+              <option value="웨딩">웨딩·커플</option>
+              <option value="증명">증명·브랜드</option>
+              <option value="기타">기타</option>
+            </select>
+          </div>
+
+          <div class="upload-zone" id="uploadZone" role="button" tabindex="0" aria-label="사진 업로드 영역">
+            <input type="file" id="fileInput" multiple accept="image/*" style="display:none">
+            <div class="upload-zone__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="3" y="3" width="18" height="18" rx="3"/>
+                <circle cx="8.5" cy="8.5" r="1.5"/>
+                <polyline points="21 15 16 10 5 21"/>
+              </svg>
+            </div>
+            <p>사진을 여기로 드래그하거나 클릭해서 선택하세요</p>
+            <small>여러 장 동시 업로드 가능 · JPG, PNG, WEBP 지원</small>
+          </div>
+        </div>
+
+        <p id="uploadStatus" style="margin:12px 0 0; font-family:var(--font-ui); font-size:0.9rem; color:var(--blue-fusion); min-height:1.4em;"></p>
+      </section>
+
+      <!-- 업로드된 사진 목록 -->
+      <section class="admin-section-card">
+        <div class="admin-photo-header">
+          <h2 class="admin-section-title" style="margin:0">업로드된 사진</h2>
+          <div class="admin-category-tabs" id="categoryTabs">
+            <button class="is-active" data-cat="전체">전체</button>
+            <button data-cat="프로필">프로필</button>
+            <button data-cat="웨딩">웨딩·커플</button>
+            <button data-cat="증명">증명·브랜드</button>
+            <button data-cat="기타">기타</button>
+          </div>
+        </div>
+
+        <p class="admin-photo-count" id="photoCount"></p>
+        <div class="photo-grid-admin" id="photoGrid"></div>
+        <p class="admin-empty" id="emptyMsg" style="display:none">업로드된 사진이 없습니다. 위 업로드 영역에서 사진을 추가해 주세요.</p>
+      </section>
+
+      <!-- 갤러리 페이지 문구 -->
+      <section class="admin-section-card">
+        <h2 class="admin-section-title">갤러리 페이지 문구</h2>
+        <p style="margin:0 0 18px; color:var(--ink-soft); font-size:0.9rem;">갤러리 상단에 표시되는 제목과 설명 문구를 수정합니다.</p>
+        <div id="adminForm" class="admin-form-grid"></div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="js/content-manager.js"></script>
+  <script src="js/gallery-manager.js"></script>
+  <script src="js/admin.js"></script>
+  <script>
+    (function initGalleryAdmin() {
+      var uploadZone = document.getElementById('uploadZone');
+      var fileInput = document.getElementById('fileInput');
+      var categorySelect = document.getElementById('uploadCategory');
+      var photoGrid = document.getElementById('photoGrid');
+      var categoryTabs = document.getElementById('categoryTabs');
+      var emptyMsg = document.getElementById('emptyMsg');
+      var photoCount = document.getElementById('photoCount');
+      var uploadStatus = document.getElementById('uploadStatus');
+      var currentCat = '전체';
+      var allPhotos = [];
+
+      function renderGrid() {
+        var filtered = currentCat === '전체'
+          ? allPhotos
+          : allPhotos.filter(function (p) { return p.category === currentCat; });
+
+        photoCount.textContent = currentCat === '전체'
+          ? '전체 ' + allPhotos.length + '장'
+          : currentCat + ' ' + filtered.length + '장 (전체 ' + allPhotos.length + '장)';
+
+        photoGrid.innerHTML = '';
+
+        if (filtered.length === 0) {
+          emptyMsg.style.display = '';
+          return;
+        }
+        emptyMsg.style.display = 'none';
+
+        filtered.forEach(function (photo) {
+          var item = document.createElement('div');
+          item.className = 'photo-item-admin';
+
+          var img = document.createElement('img');
+          img.src = photo.src;
+          img.alt = photo.name || photo.category;
+          img.loading = 'lazy';
+
+          var cat = document.createElement('span');
+          cat.className = 'photo-item-admin__cat';
+          cat.textContent = photo.category;
+
+          var overlay = document.createElement('div');
+          overlay.className = 'photo-item-admin__overlay';
+
+          var del = document.createElement('button');
+          del.className = 'photo-item-admin__delete';
+          del.setAttribute('aria-label', '사진 삭제');
+          del.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>';
+          del.addEventListener('click', function () {
+            if (!confirm('이 사진을 삭제할까요?')) { return; }
+            window.PageStudioGallery.remove(photo.id).then(loadPhotos);
+          });
+
+          overlay.appendChild(del);
+          item.appendChild(img);
+          item.appendChild(cat);
+          item.appendChild(overlay);
+          photoGrid.appendChild(item);
+        });
+      }
+
+      function loadPhotos() {
+        window.PageStudioGallery.getAll().then(function (photos) {
+          allPhotos = photos.slice().sort(function (a, b) { return b.ts - a.ts; });
+          renderGrid();
+        });
+      }
+
+      categoryTabs.addEventListener('click', function (e) {
+        var btn = e.target.closest('button[data-cat]');
+        if (!btn) { return; }
+        currentCat = btn.dataset.cat;
+        categoryTabs.querySelectorAll('button').forEach(function (b) { b.classList.remove('is-active'); });
+        btn.classList.add('is-active');
+        renderGrid();
+      });
+
+      function processFiles(files) {
+        if (!files || files.length === 0) { return; }
+        var category = categorySelect.value;
+        var total = files.length;
+        var done = 0;
+        uploadStatus.textContent = '업로드 중... (0/' + total + ')';
+
+        Array.from(files).forEach(function (file) {
+          if (!file.type.startsWith('image/')) {
+            done++;
+            if (done === total) { onAllDone(); }
+            return;
+          }
+          var reader = new FileReader();
+          reader.onload = function (e) {
+            window.PageStudioGallery.add(e.target.result, file.name, category).then(function () {
+              done++;
+              uploadStatus.textContent = '업로드 중... (' + done + '/' + total + ')';
+              if (done === total) { onAllDone(); }
+            });
+          };
+          reader.readAsDataURL(file);
+        });
+      }
+
+      function onAllDone() {
+        uploadStatus.textContent = '업로드 완료!';
+        setTimeout(function () { uploadStatus.textContent = ''; }, 2000);
+        currentCat = '전체';
+        categoryTabs.querySelectorAll('button').forEach(function (b) {
+          b.classList.toggle('is-active', b.dataset.cat === '전체');
+        });
+        loadPhotos();
+      }
+
+      uploadZone.addEventListener('click', function () { fileInput.click(); });
+      uploadZone.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileInput.click(); }
+      });
+      fileInput.addEventListener('change', function () { processFiles(fileInput.files); fileInput.value = ''; });
+
+      uploadZone.addEventListener('dragover', function (e) { e.preventDefault(); uploadZone.classList.add('is-dragover'); });
+      uploadZone.addEventListener('dragleave', function () { uploadZone.classList.remove('is-dragover'); });
+      uploadZone.addEventListener('drop', function (e) {
+        e.preventDefault();
+        uploadZone.classList.remove('is-dragover');
+        processFiles(e.dataTransfer.files);
+      });
+
+      loadPhotos();
+    })();
+  </script>
+</body>
+</html>

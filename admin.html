@@ -1,881 +1,101 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>관리자 | PAGE STUDIO</title>
-  <meta name="robots" content="noindex, nofollow" />
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="css/components.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>관리자 대시보드 | PAGE STUDIO</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
 </head>
-<body>
+<body data-admin-page="true" data-admin-hub="true">
 
-<!-- ─── 초기 설정 화면 ────────────────────────────────────────── -->
-<div class="admin-lock" id="screenSetup" style="display:none;">
-  <div class="admin-lock__box" style="max-width:440px;">
-    <span class="admin-lock__brand">PAGE STUDIO</span>
-    <span class="admin-lock__label">초기 설정 (최초 1회)</span>
-    <form class="admin-lock__form" id="setupForm" novalidate>
-      <input class="admin-lock__input" type="password" id="setupToken"
-             placeholder="GitHub Personal Access Token" autocomplete="off" />
-      <input class="admin-lock__input" type="password" id="setupPw"
-             placeholder="관리자 비밀번호 설정" autocomplete="new-password" style="margin-top:8px;" />
-      <input class="admin-lock__input" type="password" id="setupPw2"
-             placeholder="비밀번호 확인" autocomplete="new-password" style="margin-top:8px;" />
-      <p class="admin-lock__error" id="setupError"></p>
-      <button type="submit" class="btn btn--primary" style="width:100%;margin-top:4px;">설정 완료</button>
-    </form>
-    <p style="font-family:var(--font-sans);font-size:0.78rem;color:var(--text-muted);margin-top:16px;line-height:1.6;text-align:center;">
-      토큰은 이 기기의 브라우저에 암호화 저장됩니다.<br>
-      소스코드에는 절대 포함되지 않습니다.
-    </p>
-  </div>
-</div>
-
-<!-- ─── 로그인 화면 ──────────────────────────────────────────── -->
-<div class="admin-lock" id="screenLogin" style="display:none;">
-  <div class="admin-lock__box">
-    <span class="admin-lock__brand">PAGE STUDIO</span>
-    <span class="admin-lock__label">관리자 전용 페이지</span>
-    <form class="admin-lock__form" id="loginForm" novalidate>
-      <input class="admin-lock__input" type="password" id="loginPw"
-             placeholder="비밀번호" autocomplete="current-password" />
-      <p class="admin-lock__error" id="loginError">비밀번호가 올바르지 않습니다.</p>
-      <button type="submit" class="btn btn--primary" style="width:100%;margin-top:4px;">접속</button>
-    </form>
-    <button id="resetSetupBtn" style="margin-top:16px;background:none;border:none;font-family:var(--font-sans);font-size:0.78rem;color:var(--text-muted);cursor:pointer;text-decoration:underline;">
-      토큰 재설정 (새 기기 또는 토큰 변경 시)
-    </button>
-  </div>
-</div>
-
-<!-- ─── 관리자 패널 ──────────────────────────────────────────── -->
-<div class="admin-panel" id="adminPanel">
-
-  <div class="admin-header">
-    <div class="admin-header__brand">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-      PAGE STUDIO
-      <span class="admin-header__subtitle">Admin Panel</span>
+  <!-- 잠금 화면 (JS가 .is-visible 추가 시 표시) -->
+  <div class="admin-lock" id="adminLockScreen">
+    <div class="admin-lock__box">
+      <span class="admin-lock__brand">PAGE STUDIO</span>
+      <span class="admin-lock__label">Admin Access</span>
+      <h2 id="adminLockTitle" style="font-family:var(--font-sans);font-size:1.125rem;font-weight:700;color:var(--text-primary);margin-bottom:10px;">관리자 비밀번호를 입력해 주세요</h2>
+      <p id="adminLockLead" style="font-family:var(--font-serif);font-size:0.9rem;color:var(--text-muted);line-height:1.7;margin-bottom:28px;">설정된 비밀번호를 입력하면 관리자 페이지로 들어갈 수 있습니다.</p>
+      <form id="adminLockForm" class="admin-lock__form">
+        <label class="admin-field admin-field--hidden" id="adminPasswordConfirmField">
+          <span class="admin-label">비밀번호 확인</span>
+          <input class="admin-lock__input" id="adminPasswordConfirmInput" type="password" autocomplete="new-password" placeholder="비밀번호를 한 번 더 입력해 주세요">
+        </label>
+        <label class="admin-field">
+          <span class="admin-label" id="adminPasswordLabel">비밀번호</span>
+          <input class="admin-lock__input" id="adminPasswordInput" type="password" autocomplete="current-password" placeholder="비밀번호를 입력해 주세요">
+        </label>
+        <p class="admin-lock__error" id="adminLockError" aria-live="polite"></p>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:4px;">
+          <button class="btn btn--primary" type="submit" id="adminLockSubmit">입장하기</button>
+          <a class="btn btn--outline" href="index.html">홈으로</a>
+        </div>
+      </form>
     </div>
-    <button class="admin-header__logout" id="logoutBtn" aria-label="로그아웃">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-      로그아웃
-    </button>
   </div>
 
-  <div class="admin-tabs" role="tablist">
-    <button class="admin-tab active" data-pane="siteinfo" role="tab" aria-selected="true">기본 정보</button>
-    <button class="admin-tab" data-pane="faq" role="tab" aria-selected="false">FAQ 관리</button>
-    <button class="admin-tab" data-pane="prices" role="tab" aria-selected="false">가격 관리</button>
-    <button class="admin-tab" data-pane="gallery" role="tab" aria-selected="false">갤러리 관리</button>
-    <button class="admin-tab" data-pane="reservations" role="tab" aria-selected="false">예약 안내</button>
-  </div>
+  <!-- 관리자 대시보드 -->
+  <div style="min-height:100vh;background-color:var(--color-bg);">
 
-  <div class="admin-content">
-
-    <!-- ─── 기본 정보 ──── -->
-    <div class="admin-pane active" id="pane-siteinfo" role="tabpanel">
-      <div class="admin-card" style="margin-bottom:24px;">
-        <div class="admin-card__title">연락처 & 운영 정보</div>
-        <form id="siteInfoForm" style="display:grid;gap:12px;">
-          <div class="admin-grid-2">
-            <div class="admin-field">
-              <label class="admin-label">전화번호</label>
-              <input class="admin-input" type="text" id="si-phone" placeholder="010-0000-0000" />
-            </div>
-            <div class="admin-field">
-              <label class="admin-label">이메일</label>
-              <input class="admin-input" type="email" id="si-email" placeholder="studio@example.com" />
-            </div>
-            <div class="admin-field" style="grid-column:1/-1;">
-              <label class="admin-label">주소</label>
-              <input class="admin-input" type="text" id="si-address" placeholder="부산 금정구 (부산대 인근)" />
-            </div>
-            <div class="admin-field" style="grid-column:1/-1;">
-              <label class="admin-label">운영시간</label>
-              <input class="admin-input" type="text" id="si-hours" placeholder="화–일 10:00 ~ 19:00 / 월 휴무" />
-            </div>
-            <div class="admin-field">
-              <label class="admin-label">인스타그램 URL</label>
-              <input class="admin-input" type="url" id="si-instagram" placeholder="https://instagram.com/..." />
-            </div>
-            <div class="admin-field">
-              <label class="admin-label">카카오 채널 URL</label>
-              <input class="admin-input" type="url" id="si-kakao" placeholder="https://pf.kakao.com/..." />
-            </div>
-          </div>
-          <div>
-            <button type="submit" class="btn btn--primary btn--sm" id="siteInfoBtn">저장</button>
-            <span id="siteInfoStatus" style="font-family:var(--font-sans);font-size:0.85rem;margin-left:12px;color:var(--text-muted);"></span>
-          </div>
-        </form>
+    <!-- 헤더 -->
+    <div class="admin-header">
+      <div class="admin-header__brand">
+        PAGE STUDIO
+        <span class="admin-header__subtitle">Admin Dashboard</span>
       </div>
-      <div class="admin-card" style="margin-bottom:24px;">
-        <div class="admin-card__title">홈페이지 소개 글</div>
-        <form id="aboutForm" style="display:grid;gap:12px;">
-          <div class="admin-field">
-            <label class="admin-label">소개 제목</label>
-            <input class="admin-input" type="text" id="si-about-title" placeholder="감성을 담은 사진으로..." />
-          </div>
-          <div class="admin-field">
-            <label class="admin-label">소개 글 첫 번째 단락</label>
-            <textarea class="admin-textarea" id="si-about-p1" style="height:80px;"></textarea>
-          </div>
-          <div class="admin-field">
-            <label class="admin-label">소개 글 두 번째 단락</label>
-            <textarea class="admin-textarea" id="si-about-p2" style="height:80px;"></textarea>
-          </div>
-          <div>
-            <button type="submit" class="btn btn--primary btn--sm" id="aboutBtn">저장</button>
-            <span id="aboutStatus" style="font-family:var(--font-sans);font-size:0.85rem;margin-left:12px;color:var(--text-muted);"></span>
-          </div>
-        </form>
-      </div>
-      <div class="admin-card">
-        <div class="admin-card__title">슬로건 & 미션</div>
-        <form id="brandForm" style="display:grid;gap:12px;">
-          <div class="admin-field">
-            <label class="admin-label">슬로건 (푸터 하단)</label>
-            <input class="admin-input" type="text" id="si-slogan" placeholder="당신이라는 이야기에 한 장을 더한다" />
-          </div>
-          <div class="admin-field">
-            <label class="admin-label">미션 (푸터 브랜드 소개)</label>
-            <input class="admin-input" type="text" id="si-mission" placeholder="감성을 담은 사진으로..." />
-          </div>
-          <div>
-            <button type="submit" class="btn btn--primary btn--sm" id="brandBtn">저장</button>
-            <span id="brandStatus" style="font-family:var(--font-sans);font-size:0.85rem;margin-left:12px;color:var(--text-muted);"></span>
-          </div>
-        </form>
+      <div style="display:flex;gap:16px;align-items:center;">
+        <a href="index.html" target="_blank" rel="noreferrer" style="font-family:var(--font-sans);font-size:0.8125rem;color:rgba(255,255,255,0.6);text-decoration:none;">홈 보기 →</a>
+        <button type="button" id="changePassword" class="admin-header__logout">비밀번호 변경</button>
       </div>
     </div>
 
-    <!-- ─── FAQ 관리 ──── -->
-    <div class="admin-pane" id="pane-faq" role="tabpanel">
-      <div class="admin-card" style="margin-bottom:24px;">
-        <div class="admin-card__title">FAQ 추가</div>
-        <form id="faqForm" style="display:grid;gap:12px;">
-          <div class="admin-field">
-            <label class="admin-label">질문</label>
-            <input class="admin-input" type="text" id="faqQ" placeholder="자주 묻는 질문을 입력하세요" required />
-          </div>
-          <div class="admin-field">
-            <label class="admin-label">답변</label>
-            <textarea class="admin-textarea" id="faqA" placeholder="답변을 입력하세요" required></textarea>
-          </div>
-          <div>
-            <button type="submit" class="btn btn--primary btn--sm" id="faqAddBtn">추가 및 저장</button>
-            <span id="faqStatus" style="font-family:var(--font-sans);font-size:0.85rem;margin-left:12px;color:var(--text-muted);"></span>
-          </div>
-        </form>
-      </div>
-      <div class="admin-card">
-        <div class="admin-card__title">FAQ 목록</div>
-        <div id="faqList"></div>
-      </div>
-    </div>
+    <!-- 콘텐츠 -->
+    <div class="admin-content">
+      <div id="adminStatus" class="admin-status"></div>
 
-    <!-- ─── 가격 관리 ──── -->
-    <div class="admin-pane" id="pane-prices" role="tabpanel">
-      <div class="admin-card" style="margin-bottom:24px;">
-        <div class="admin-card__title">새 상품 추가</div>
-        <form id="priceAddForm" style="display:grid;gap:12px;">
-          <div class="admin-grid-2">
-            <div class="admin-field">
-              <label class="admin-label">상품명</label>
-              <input class="admin-input" type="text" id="paName" placeholder="예: 커플 프로필" required />
-            </div>
-            <div class="admin-field">
-              <label class="admin-label">가격 (예: 150,000)</label>
-              <input class="admin-input" type="text" id="paPrice" placeholder="150,000" required />
-            </div>
-            <div class="admin-field">
-              <label class="admin-label">촬영 시간</label>
-              <input class="admin-input" type="text" id="paDuration" placeholder="예: 60분" required />
-            </div>
-            <div class="admin-field">
-              <label class="admin-label">보정 컷 수</label>
-              <input class="admin-input" type="text" id="paRetouched" placeholder="예: 5컷" required />
-            </div>
-            <div class="admin-field">
-              <label class="admin-label">전달 방식</label>
-              <input class="admin-input" type="text" id="paDelivery" placeholder="예: 디지털 파일 (고해상도)" />
-            </div>
-            <div class="admin-field">
-              <label class="admin-label">포함 항목 (줄바꿈으로 구분)</label>
-              <textarea class="admin-textarea" id="paIncludes" style="height:80px;" placeholder="의상 변경 1회 포함&#10;배경 1종 선택"></textarea>
-            </div>
-          </div>
-          <div class="admin-field" style="flex-direction:row;align-items:center;gap:10px;">
-            <input type="checkbox" id="paFeatured" style="width:16px;height:16px;accent-color:var(--color-primary);" />
-            <label for="paFeatured" style="font-family:var(--font-sans);font-size:0.875rem;cursor:pointer;">인기 상품 표시 (강조)</label>
-          </div>
-          <div>
-            <button type="submit" class="btn btn--primary btn--sm" id="priceAddBtn">추가 및 저장</button>
-            <span id="priceAddStatus" style="font-family:var(--font-sans);font-size:0.85rem;margin-left:12px;color:var(--text-muted);"></span>
-          </div>
-        </form>
-      </div>
-      <div class="admin-card">
-        <div class="admin-card__title">가격 목록 <span style="font-size:0.8rem;font-weight:400;color:var(--text-muted);">— 편집 버튼으로 수정</span></div>
-        <div id="pricesAdminList"></div>
-      </div>
-      <div class="admin-card" id="priceEditCard" style="margin-top:24px;display:none;">
-        <div class="admin-card__title" id="priceEditTitle">가격 편집</div>
-        <form id="priceEditForm" style="display:grid;gap:12px;">
-          <div class="admin-grid-2">
-            <div class="admin-field">
-              <label class="admin-label">상품명</label>
-              <input class="admin-input" type="text" id="peName" required />
-            </div>
-            <div class="admin-field">
-              <label class="admin-label">가격 (예: 150,000)</label>
-              <input class="admin-input" type="text" id="pePrice" required />
-            </div>
-            <div class="admin-field">
-              <label class="admin-label">촬영 시간</label>
-              <input class="admin-input" type="text" id="peDuration" placeholder="예: 60분" required />
-            </div>
-            <div class="admin-field">
-              <label class="admin-label">보정 컷 수</label>
-              <input class="admin-input" type="text" id="peRetouched" placeholder="예: 10컷" required />
-            </div>
-            <div class="admin-field">
-              <label class="admin-label">전달 방식</label>
-              <input class="admin-input" type="text" id="peDelivery" placeholder="예: 디지털 파일" />
-            </div>
-            <div class="admin-field">
-              <label class="admin-label">포함 항목 (줄바꿈으로 구분)</label>
-              <textarea class="admin-textarea" id="peIncludes" style="height:100px;"></textarea>
-            </div>
-          </div>
-          <div class="admin-field" style="flex-direction:row;align-items:center;gap:10px;">
-            <input type="checkbox" id="peFeatured" style="width:16px;height:16px;accent-color:var(--color-primary);" />
-            <label for="peFeatured" style="font-family:var(--font-sans);font-size:0.875rem;cursor:pointer;">인기 상품 표시 (강조)</label>
-          </div>
-          <div>
-            <button type="submit" class="btn btn--primary btn--sm" id="priceEditSaveBtn">저장</button>
-            <button type="button" class="btn btn--outline btn--sm" id="priceEditCancelBtn" style="margin-left:8px;">취소</button>
-            <span id="priceEditStatus" style="font-family:var(--font-sans);font-size:0.85rem;margin-left:12px;color:var(--text-muted);"></span>
-          </div>
-        </form>
-      </div>
-    </div>
-
-    <!-- ─── 갤러리 관리 ──── -->
-    <div class="admin-pane" id="pane-gallery" role="tabpanel">
-      <div class="admin-card" style="margin-bottom:24px;">
-        <div class="admin-card__title">사진 추가</div>
-        <form id="galleryAddForm" style="display:grid;gap:12px;">
-          <div class="admin-grid-2">
-            <div class="admin-field" style="grid-column:1/-1;">
-              <label class="admin-label">이미지 파일 업로드 (권장 1MB 이하)</label>
-              <input class="admin-input" type="file" id="galleryFile" accept="image/*" />
-              <p style="font-family:var(--font-sans);font-size:0.78rem;color:var(--text-muted);margin-top:4px;">또는 아래 URL 직접 입력</p>
-            </div>
-            <div class="admin-field" style="grid-column:1/-1;">
-              <label class="admin-label">이미지 URL (파일 미선택 시)</label>
-              <input class="admin-input" type="url" id="galleryUrl" placeholder="https://..." />
-            </div>
-            <div class="admin-field">
-              <label class="admin-label">카테고리</label>
-              <select class="admin-input" id="galleryCategory">
-                <option value="profile">프로필</option>
-                <option value="artist">아티스트</option>
-                <option value="group">단체</option>
-                <option value="selfbooth">셀프부스</option>
-              </select>
-            </div>
-            <div class="admin-field">
-              <label class="admin-label">설명 (alt)</label>
-              <input class="admin-input" type="text" id="galleryAlt" placeholder="사진 설명" />
-            </div>
-          </div>
-          <div>
-            <button type="submit" class="btn btn--primary btn--sm" id="galleryAddBtn">추가 및 저장</button>
-            <span id="galleryAddStatus" style="font-family:var(--font-sans);font-size:0.85rem;margin-left:12px;color:var(--text-muted);"></span>
-          </div>
-        </form>
-      </div>
-      <div class="admin-card">
-        <div class="admin-card__title">등록된 사진 <span id="galleryCnt" style="font-size:0.8rem;font-weight:400;color:var(--text-muted);"></span></div>
-        <div id="galleryAdminGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;"></div>
-      </div>
-    </div>
-
-    <!-- ─── 예약 안내 ──── -->
-    <div class="admin-pane" id="pane-reservations" role="tabpanel">
-      <div class="admin-card">
-        <div class="admin-card__title">예약 관리 안내</div>
-        <p style="font-family:var(--font-sans);font-size:0.9rem;color:var(--text-body);line-height:1.8;">
-          예약 신청은 <strong>Web3Forms</strong>를 통해 이메일로 전달됩니다.<br>
-          고객이 예약 폼을 제출하면 설정된 이메일 주소로 예약 내용이 자동 발송됩니다.
+      <div class="admin-card" style="margin-bottom:32px;">
+        <div class="admin-card__title">관리자 대시보드</div>
+        <p style="font-family:var(--font-serif);font-size:0.9375rem;color:var(--text-muted);line-height:1.8;">
+          카테고리를 선택해 해당 페이지의 문구와 이미지를 수정합니다. 저장 후 홈페이지를 새로고침하면 반영됩니다.
         </p>
-        <div style="margin-top:24px;padding:20px;background:rgba(247,216,200,0.15);border-radius:8px;border:1px solid rgba(234,201,183,0.4);">
-          <p style="font-family:var(--font-sans);font-size:0.875rem;font-weight:600;color:var(--text-primary);margin-bottom:12px;">Web3Forms 설정 방법</p>
-          <ol style="font-family:var(--font-sans);font-size:0.85rem;color:var(--text-muted);line-height:2;padding-left:20px;">
-            <li>web3forms.com 접속 후 이메일로 무료 가입 (무료 250건/월)</li>
-            <li>Access Key 발급</li>
-            <li>reservation.html 파일에서 <code style="background:rgba(0,0,0,0.06);padding:2px 6px;border-radius:3px;">YOUR_WEB3FORMS_KEY</code>를 발급받은 키로 교체 후 저장</li>
-          </ol>
-        </div>
+      </div>
+
+      <div class="admin-hub-grid">
+        <a class="admin-hub-card" href="admin-common.html">
+          <span class="admin-hub-card__label">공통 정보</span>
+          <strong class="admin-hub-card__title">연락처, 인스타그램, 푸터 문구</strong>
+          <p class="admin-hub-card__desc">전화번호, 위치, 운영 시간, 푸터 설명처럼 전체 페이지에 공통으로 들어가는 내용을 관리합니다.</p>
+        </a>
+        <a class="admin-hub-card" href="admin-home.html">
+          <span class="admin-hub-card__label">홈</span>
+          <strong class="admin-hub-card__title">스튜디오 소개와 촬영 상품 안내</strong>
+          <p class="admin-hub-card__desc">메인 비주얼, 소개 문구, 촬영 상품 카드, FAQ, 대표 이미지까지 홈 화면 요소를 수정합니다.</p>
+        </a>
+        <a class="admin-hub-card" href="admin-gallery.html">
+          <span class="admin-hub-card__label">갤러리</span>
+          <strong class="admin-hub-card__title">사진 업로드 · 삭제 · 문구 관리</strong>
+          <p class="admin-hub-card__desc">사진을 직접 업로드하고 삭제할 수 있습니다. 카테고리별로 분류해 갤러리에 표시합니다.</p>
+        </a>
+        <a class="admin-hub-card" href="admin-price.html">
+          <span class="admin-hub-card__label">가격안내</span>
+          <strong class="admin-hub-card__title">상품명과 금액</strong>
+          <p class="admin-hub-card__desc">가격 페이지 상단 설명과 상품명, 기준 금액을 빠르게 수정할 수 있습니다.</p>
+        </a>
+        <a class="admin-hub-card" href="admin-inquiry.html">
+          <span class="admin-hub-card__label">문의하기</span>
+          <strong class="admin-hub-card__title">문의 페이지와 위치 안내</strong>
+          <p class="admin-hub-card__desc">문의 페이지 제목, 위치 설명, 연락처와 운영 시간 안내를 카테고리별로 관리합니다.</p>
+        </a>
+        <a class="admin-hub-card" href="admin-reservation.html">
+          <span class="admin-hub-card__label">예약하기</span>
+          <strong class="admin-hub-card__title">예약 안내와 준비 문구</strong>
+          <p class="admin-hub-card__desc">예약 페이지 상단 문구와 예약 전 안내 카드 내용을 분리해서 수정합니다.</p>
+        </a>
       </div>
     </div>
-
   </div>
-</div>
 
-<script src="js/main.js"></script>
-<script>
-/* ================================================================
-   PAGE STUDIO Admin — 비밀번호 전용 로그인 (Web Crypto AES-GCM)
-   GitHub 토큰은 브라우저 localStorage에 암호화 저장
-   ================================================================ */
-
-const OWNER  = 'yu-ant';
-const REPO   = 'pagestudio';
-const BRANCH = 'main';
-const API    = `https://api.github.com/repos/${OWNER}/${REPO}/contents`;
-const LS_KEY = 'ps_enc_token';
-
-let TOKEN = '';
-const shaCache = {};
-
-// ─── 화면 전환 ───────────────────────────────────────────────── //
-const screenSetup = document.getElementById('screenSetup');
-const screenLogin = document.getElementById('screenLogin');
-const panelEl     = document.getElementById('adminPanel');
-
-function showScreen(name) {
-  screenSetup.style.display = name === 'setup' ? '' : 'none';
-  screenLogin.style.display = name === 'login' ? '' : 'none';
-  panelEl.classList.toggle('show', name === 'panel');
-}
-
-// 초기 상태 판단
-if (localStorage.getItem(LS_KEY)) {
-  showScreen('login');
-} else {
-  showScreen('setup');
-}
-
-// ─── 암호화 / 복호화 (Web Crypto API) ────────────────────────── //
-async function deriveKey(password, salt) {
-  const enc = new TextEncoder();
-  const km = await crypto.subtle.importKey('raw', enc.encode(password), 'PBKDF2', false, ['deriveKey']);
-  return crypto.subtle.deriveKey(
-    { name: 'PBKDF2', salt, iterations: 200000, hash: 'SHA-256' },
-    km,
-    { name: 'AES-GCM', length: 256 },
-    false,
-    ['encrypt', 'decrypt']
-  );
-}
-
-async function encryptToken(password, token) {
-  const enc  = new TextEncoder();
-  const salt = crypto.getRandomValues(new Uint8Array(16));
-  const iv   = crypto.getRandomValues(new Uint8Array(12));
-  const key  = await deriveKey(password, salt);
-  const ct   = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, enc.encode(token));
-  const out  = new Uint8Array(16 + 12 + ct.byteLength);
-  out.set(salt, 0); out.set(iv, 16); out.set(new Uint8Array(ct), 28);
-  return btoa(String.fromCharCode(...out));
-}
-
-async function decryptToken(password, b64) {
-  const buf  = Uint8Array.from(atob(b64), c => c.charCodeAt(0));
-  const salt = buf.slice(0, 16);
-  const iv   = buf.slice(16, 28);
-  const ct   = buf.slice(28);
-  const key  = await deriveKey(password, salt);
-  const pt   = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, ct);
-  return new TextDecoder().decode(pt);
-}
-
-// ─── 초기 설정 ───────────────────────────────────────────────── //
-document.getElementById('setupForm').addEventListener('submit', async e => {
-  e.preventDefault();
-  const token = document.getElementById('setupToken').value.trim();
-  const pw    = document.getElementById('setupPw').value;
-  const pw2   = document.getElementById('setupPw2').value;
-  const err   = document.getElementById('setupError');
-
-  if (!token || !pw) { showErr(err, '토큰과 비밀번호를 모두 입력해 주세요.'); return; }
-  if (pw !== pw2)    { showErr(err, '비밀번호가 일치하지 않습니다.'); return; }
-
-  const btn = e.target.querySelector('[type=submit]');
-  btn.disabled = true; btn.textContent = '처리 중...';
-
-  try {
-    // 토큰 유효성 먼저 확인
-    const test = await fetch(`${API}/data/site.json?ref=${BRANCH}`, {
-      headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
-    });
-    if (!test.ok) throw new Error('토큰 또는 저장소 접근 실패 (' + test.status + ')');
-
-    const enc = await encryptToken(pw, token);
-    localStorage.setItem(LS_KEY, enc);
-    TOKEN = token;
-    showScreen('panel');
-    initAdmin();
-  } catch(ex) {
-    showErr(err, ex.message);
-    btn.disabled = false; btn.textContent = '설정 완료';
-  }
-});
-
-// ─── 로그인 ──────────────────────────────────────────────────── //
-document.getElementById('loginForm').addEventListener('submit', async e => {
-  e.preventDefault();
-  const pw  = document.getElementById('loginPw').value;
-  const err = document.getElementById('loginError');
-  const btn = e.target.querySelector('[type=submit]');
-  btn.disabled = true; btn.textContent = '확인 중...';
-  err.classList.remove('show');
-
-  try {
-    const enc = localStorage.getItem(LS_KEY);
-    TOKEN = await decryptToken(pw, enc);
-    showScreen('panel');
-    initAdmin();
-  } catch {
-    err.classList.add('show');
-    btn.disabled = false; btn.textContent = '접속';
-  }
-});
-
-document.getElementById('resetSetupBtn').addEventListener('click', () => {
-  if (!confirm('저장된 토큰을 삭제하고 재설정 하시겠습니까?')) return;
-  localStorage.removeItem(LS_KEY);
-  showScreen('setup');
-});
-
-document.getElementById('logoutBtn').addEventListener('click', () => {
-  TOKEN = '';
-  showScreen('login');
-  document.getElementById('loginPw').value = '';
-});
-
-function showErr(el, msg) { el.textContent = msg; el.classList.add('show'); }
-
-// ─── 탭 전환 ─────────────────────────────────────────────────── //
-document.querySelectorAll('.admin-tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    document.querySelectorAll('.admin-tab').forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
-    document.querySelectorAll('.admin-pane').forEach(p => p.classList.remove('active'));
-    tab.classList.add('active'); tab.setAttribute('aria-selected','true');
-    document.getElementById('pane-' + tab.dataset.pane)?.classList.add('active');
-  });
-});
-
-// ─── GitHub API 헬퍼 ─────────────────────────────────────────── //
-async function ghGet(path) {
-  const r = await fetch(`${API}/${path}?ref=${BRANCH}&t=${Date.now()}`, {
-    headers: { Authorization: `token ${TOKEN}`, Accept: 'application/vnd.github.v3+json' }
-  });
-  if (!r.ok) throw new Error(`GET ${path} → ${r.status}`);
-  const j = await r.json();
-  shaCache[path] = j.sha;
-  return JSON.parse(decodeURIComponent(escape(atob(j.content.replace(/\n/g, '')))));
-}
-
-async function ghPut(path, data, message) {
-  const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
-  const body = { message, content, branch: BRANCH };
-  if (shaCache[path]) body.sha = shaCache[path];
-  const r = await fetch(`${API}/${path}`, {
-    method: 'PUT',
-    headers: { Authorization: `token ${TOKEN}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
-    body: JSON.stringify(body)
-  });
-  if (!r.ok) { const e = await r.json().catch(()=>({})); throw new Error(e.message || `PUT ${path} → ${r.status}`); }
-  const j = await r.json();
-  if (j.content) shaCache[path] = j.content.sha;
-}
-
-async function ghPutRaw(path, b64content, message) {
-  const body = { message, content: b64content, branch: BRANCH };
-  if (shaCache[path]) body.sha = shaCache[path];
-  const r = await fetch(`${API}/${path}`, {
-    method: 'PUT',
-    headers: { Authorization: `token ${TOKEN}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
-    body: JSON.stringify(body)
-  });
-  if (!r.ok) { const e = await r.json().catch(()=>({})); throw new Error(e.message || `PUT ${path} → ${r.status}`); }
-  const j = await r.json();
-  if (j.content) shaCache[path] = j.content.sha;
-  return `https://raw.githubusercontent.com/${OWNER}/${REPO}/${BRANCH}/${path}`;
-}
-
-// ─── 초기화 ──────────────────────────────────────────────────── //
-function initAdmin() { loadSiteInfo(); loadFaq(); loadPrices(); loadGallery(); }
-
-/* ── 기본 정보 ───────────────────────────────────────────────── */
-let siteData = {};
-
-async function loadSiteInfo() {
-  try {
-    siteData = await ghGet('data/site.json');
-    const c = siteData.contact || {};
-    const s = siteData.social  || {};
-    const b = siteData.brand   || {};
-    const a = siteData.about   || {};
-    document.getElementById('si-phone').value     = c.phone     || '';
-    document.getElementById('si-email').value     = c.email     || '';
-    document.getElementById('si-address').value   = c.address   || '';
-    document.getElementById('si-hours').value     = c.hours     || '';
-    document.getElementById('si-instagram').value = s.instagram || '';
-    document.getElementById('si-kakao').value     = s.kakao     || '';
-    document.getElementById('si-about-title').value = a.title   || '';
-    document.getElementById('si-about-p1').value    = a.p1      || '';
-    document.getElementById('si-about-p2').value    = a.p2      || '';
-    document.getElementById('si-slogan').value    = b.slogan    || '';
-    document.getElementById('si-mission').value   = b.mission   || '';
-  } catch(e) { console.error('사이트 정보 로드 실패', e); }
-}
-
-async function saveSiteData(patch, statusId, btnId) {
-  const btn = document.getElementById(btnId);
-  const st  = document.getElementById(statusId);
-  btn.disabled = true; st.textContent = '저장 중...';
-  try {
-    // 최신 데이터 가져온 후 병합
-    const fresh = await ghGet('data/site.json');
-    const merged = deepMerge(fresh, patch);
-    await ghPut('data/site.json', merged, '[admin] 사이트 정보 수정');
-    siteData = merged;
-    st.textContent = '저장 완료! (배포 약 1분 소요)';
-    setTimeout(() => { st.textContent = ''; }, 4000);
-  } catch(e) { st.textContent = '저장 실패: ' + e.message; }
-  finally { btn.disabled = false; }
-}
-
-function deepMerge(target, source) {
-  const result = { ...target };
-  for (const key of Object.keys(source)) {
-    if (source[key] && typeof source[key] === 'object' && !Array.isArray(source[key])) {
-      result[key] = deepMerge(target[key] || {}, source[key]);
-    } else {
-      result[key] = source[key];
-    }
-  }
-  return result;
-}
-
-document.getElementById('siteInfoForm').addEventListener('submit', e => {
-  e.preventDefault();
-  saveSiteData({
-    contact: {
-      phone:   document.getElementById('si-phone').value.trim(),
-      email:   document.getElementById('si-email').value.trim(),
-      address: document.getElementById('si-address').value.trim(),
-      hours:   document.getElementById('si-hours').value.trim()
-    },
-    social: {
-      instagram: document.getElementById('si-instagram').value.trim(),
-      kakao:     document.getElementById('si-kakao').value.trim()
-    }
-  }, 'siteInfoStatus', 'siteInfoBtn');
-});
-
-document.getElementById('aboutForm').addEventListener('submit', e => {
-  e.preventDefault();
-  saveSiteData({
-    about: {
-      title: document.getElementById('si-about-title').value.trim(),
-      p1:    document.getElementById('si-about-p1').value.trim(),
-      p2:    document.getElementById('si-about-p2').value.trim()
-    }
-  }, 'aboutStatus', 'aboutBtn');
-});
-
-document.getElementById('brandForm').addEventListener('submit', e => {
-  e.preventDefault();
-  saveSiteData({
-    brand: {
-      slogan:  document.getElementById('si-slogan').value.trim(),
-      mission: document.getElementById('si-mission').value.trim()
-    }
-  }, 'brandStatus', 'brandBtn');
-});
-
-/* ── FAQ ─────────────────────────────────────────────────────── */
-let faqData = [];
-
-async function loadFaq() {
-  const list = document.getElementById('faqList');
-  list.innerHTML = '<p style="font-family:var(--font-sans);font-size:0.85rem;color:var(--text-muted);">불러오는 중...</p>';
-  try {
-    const site = await ghGet('data/site.json');
-    faqData = site.faq || [];
-    renderFaq();
-  } catch(e) { list.innerHTML = `<p style="color:#c0392b;font-family:var(--font-sans);font-size:0.85rem;">불러오기 실패: ${e.message}</p>`; }
-}
-
-function renderFaq() {
-  const list = document.getElementById('faqList');
-  if (!faqData.length) { list.innerHTML = '<p style="color:var(--text-muted);font-family:var(--font-sans);">등록된 FAQ가 없습니다.</p>'; return; }
-  list.innerHTML = faqData.map((item, i) => `
-    <div style="border:1px solid rgba(234,201,183,0.4);border-radius:6px;padding:16px;margin-bottom:10px;">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;">
-        <div style="flex:1;">
-          <p style="font-family:var(--font-sans);font-size:0.9rem;font-weight:600;color:var(--text-primary);margin-bottom:6px;">${i+1}. ${item.q}</p>
-          <p style="font-family:var(--font-serif);font-size:0.875rem;color:var(--text-muted);line-height:1.6;">${item.a}</p>
-        </div>
-        <div style="display:flex;gap:6px;flex-shrink:0;">
-          <button class="btn btn--xs" style="border:1px solid rgba(234,201,183,0.6);" onclick="editFaq(${i})">편집</button>
-          <button class="btn btn--xs" style="color:#c0392b;border:1px solid rgba(192,57,43,0.3);" onclick="deleteFaq(${i})">삭제</button>
-        </div>
-      </div>
-    </div>`).join('');
-}
-
-window.editFaq = function(idx) {
-  const q = prompt('질문 수정:', faqData[idx].q); if (q === null) return;
-  const a = prompt('답변 수정:', faqData[idx].a); if (a === null) return;
-  faqData[idx] = { q: q.trim(), a: a.trim() };
-  saveFaq('FAQ 수정');
-};
-
-window.deleteFaq = function(idx) {
-  if (!confirm(`"${faqData[idx].q}" 삭제하시겠습니까?`)) return;
-  faqData.splice(idx, 1);
-  saveFaq('FAQ 삭제');
-};
-
-document.getElementById('faqForm').addEventListener('submit', async e => {
-  e.preventDefault();
-  const q = document.getElementById('faqQ').value.trim();
-  const a = document.getElementById('faqA').value.trim();
-  if (!q || !a) return;
-  faqData.push({ q, a });
-  e.target.reset();
-  await saveFaq('FAQ 추가');
-});
-
-async function saveFaq(action) {
-  const btn = document.getElementById('faqAddBtn');
-  const st  = document.getElementById('faqStatus');
-  btn.disabled = true; st.textContent = '저장 중...';
-  try {
-    const site = await ghGet('data/site.json');
-    site.faq = faqData;
-    await ghPut('data/site.json', site, `[admin] ${action}`);
-    st.textContent = '저장 완료! (배포 약 1분 소요)';
-    renderFaq();
-    setTimeout(() => { st.textContent = ''; }, 4000);
-  } catch(e) { st.textContent = '저장 실패: ' + e.message; }
-  finally { btn.disabled = false; }
-}
-
-/* ── 가격 ─────────────────────────────────────────────────────── */
-let pricesData = [];
-let priceIdx   = -1;
-
-async function loadPrices() {
-  const wrap = document.getElementById('pricesAdminList');
-  wrap.innerHTML = '<p style="font-family:var(--font-sans);font-size:0.85rem;color:var(--text-muted);">불러오는 중...</p>';
-  try {
-    pricesData = await ghGet('data/prices.json');
-    renderPrices();
-  } catch(e) { wrap.innerHTML = `<p style="color:#c0392b;font-family:var(--font-sans);font-size:0.85rem;">불러오기 실패: ${e.message}</p>`; }
-}
-
-function renderPrices() {
-  document.getElementById('pricesAdminList').innerHTML = `
-    <div class="admin-table-wrap"><table class="admin-table">
-      <thead><tr><th>상품명</th><th>가격</th><th>시간</th><th>보정</th><th>인기</th><th></th></tr></thead>
-      <tbody>${pricesData.map((p,i) => `
-        <tr>
-          <td><strong>${p.name}</strong></td>
-          <td>${p.price}원~</td><td>${p.duration}</td><td>${p.retouched}</td>
-          <td>${p.featured ? '⭐' : '-'}</td>
-          <td style="white-space:nowrap;">
-            <button class="btn btn--xs" style="border:1px solid rgba(234,201,183,0.6);" onclick="openPriceEdit(${i})">편집</button>
-            <button class="btn btn--xs" style="color:#c0392b;border:1px solid rgba(192,57,43,0.3);margin-left:4px;" onclick="deletePrice(${i})">삭제</button>
-          </td>
-        </tr>`).join('')}
-      </tbody>
-    </table></div>`;
-}
-
-window.deletePrice = async function(idx) {
-  if (!confirm(`"${pricesData[idx].name}" 상품을 삭제하시겠습니까?`)) return;
-  pricesData.splice(idx, 1);
-  try {
-    await ghPut('data/prices.json', pricesData, `[admin] 가격 삭제`);
-    renderPrices();
-    document.getElementById('priceEditCard').style.display = 'none';
-    priceIdx = -1;
-  } catch(e) { alert('삭제 실패: ' + e.message); pricesData.splice(idx, 0, pricesData[idx]); }
-};
-
-document.getElementById('priceAddForm').addEventListener('submit', async e => {
-  e.preventDefault();
-  const btn = document.getElementById('priceAddBtn');
-  const st  = document.getElementById('priceAddStatus');
-  btn.disabled = true; st.textContent = '저장 중...';
-  try {
-    const maxId = pricesData.reduce((m, p) => Math.max(m, p.id || 0), 0);
-    pricesData.push({
-      id:        maxId + 1,
-      name:      document.getElementById('paName').value.trim(),
-      price:     document.getElementById('paPrice').value.trim(),
-      duration:  document.getElementById('paDuration').value.trim(),
-      retouched: document.getElementById('paRetouched').value.trim(),
-      delivery:  document.getElementById('paDelivery').value.trim(),
-      includes:  document.getElementById('paIncludes').value.split('\n').map(s=>s.trim()).filter(Boolean),
-      featured:  document.getElementById('paFeatured').checked,
-      order:     pricesData.length + 1
-    });
-    await ghPut('data/prices.json', pricesData, `[admin] 가격 추가 — ${pricesData[pricesData.length-1].name}`);
-    st.textContent = '추가 완료! (배포 약 1분 소요)';
-    e.target.reset();
-    renderPrices();
-    setTimeout(() => { st.textContent = ''; }, 4000);
-  } catch(err) { st.textContent = '저장 실패: ' + err.message; }
-  finally { btn.disabled = false; }
-});
-
-window.openPriceEdit = function(idx) {
-  priceIdx = idx;
-  const p  = pricesData[idx];
-  document.getElementById('peName').value      = p.name;
-  document.getElementById('pePrice').value     = p.price;
-  document.getElementById('peDuration').value  = p.duration;
-  document.getElementById('peRetouched').value = p.retouched;
-  document.getElementById('peDelivery').value  = p.delivery || '';
-  document.getElementById('peIncludes').value  = (p.includes || []).join('\n');
-  document.getElementById('peFeatured').checked = !!p.featured;
-  document.getElementById('priceEditTitle').textContent = `가격 편집 — ${p.name}`;
-  document.getElementById('priceEditCard').style.display = '';
-  document.getElementById('priceEditCard').scrollIntoView({ behavior:'smooth', block:'start' });
-};
-
-document.getElementById('priceEditCancelBtn').addEventListener('click', () => {
-  document.getElementById('priceEditCard').style.display = 'none'; priceIdx = -1;
-});
-
-document.getElementById('priceEditForm').addEventListener('submit', async e => {
-  e.preventDefault();
-  if (priceIdx < 0) return;
-  const btn = document.getElementById('priceEditSaveBtn');
-  const st  = document.getElementById('priceEditStatus');
-  btn.disabled = true; st.textContent = '저장 중...';
-  try {
-    pricesData[priceIdx] = {
-      ...pricesData[priceIdx],
-      name:      document.getElementById('peName').value.trim(),
-      price:     document.getElementById('pePrice').value.trim(),
-      duration:  document.getElementById('peDuration').value.trim(),
-      retouched: document.getElementById('peRetouched').value.trim(),
-      delivery:  document.getElementById('peDelivery').value.trim(),
-      includes:  document.getElementById('peIncludes').value.split('\n').map(s=>s.trim()).filter(Boolean),
-      featured:  document.getElementById('peFeatured').checked
-    };
-    await ghPut('data/prices.json', pricesData, `[admin] 가격 수정 — ${pricesData[priceIdx].name}`);
-    st.textContent = '저장 완료! (배포 약 1분 소요)';
-    renderPrices();
-    setTimeout(() => { st.textContent=''; document.getElementById('priceEditCard').style.display='none'; priceIdx=-1; }, 2000);
-  } catch(e) { st.textContent = '저장 실패: ' + e.message; }
-  finally { btn.disabled = false; }
-});
-
-/* ── 갤러리 ───────────────────────────────────────────────────── */
-let galleryData = [];
-
-async function loadGallery() {
-  const grid = document.getElementById('galleryAdminGrid');
-  grid.innerHTML = '<p style="font-family:var(--font-sans);font-size:0.85rem;color:var(--text-muted);">불러오는 중...</p>';
-  try {
-    galleryData = await ghGet('data/gallery.json');
-    renderGallery();
-  } catch(e) { grid.innerHTML = `<p style="color:#c0392b;font-family:var(--font-sans);font-size:0.85rem;">불러오기 실패: ${e.message}</p>`; }
-}
-
-function renderGallery() {
-  const grid = document.getElementById('galleryAdminGrid');
-  document.getElementById('galleryCnt').textContent = `— 총 ${galleryData.length}장`;
-  if (!galleryData.length) { grid.innerHTML = '<p style="color:var(--text-muted);font-family:var(--font-sans);">등록된 사진이 없습니다.</p>'; return; }
-  grid.innerHTML = galleryData.map((item, i) => `
-    <div style="position:relative;border-radius:6px;overflow:hidden;aspect-ratio:2/3;background:#eee;">
-      <img src="${item.src}" alt="${item.alt||''}" style="width:100%;height:100%;object-fit:cover;" loading="lazy" onerror="this.style.display='none'" />
-      <div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.6);padding:6px 8px;display:flex;justify-content:space-between;align-items:center;">
-        <span style="font-family:var(--font-sans);font-size:0.7rem;color:#fff;">${item.category||''}</span>
-        <button class="btn btn--xs" style="color:#fff;border:1px solid rgba(255,255,255,0.5);padding:2px 8px;font-size:0.7rem;" onclick="deleteGallery(${i})">삭제</button>
-      </div>
-    </div>`).join('');
-}
-
-window.deleteGallery = function(idx) {
-  if (!confirm('이 사진을 삭제하시겠습니까?')) return;
-  galleryData.splice(idx, 1);
-  saveGallery('갤러리 사진 삭제', document.getElementById('galleryAddStatus'));
-};
-
-document.getElementById('galleryAddForm').addEventListener('submit', async e => {
-  e.preventDefault();
-  const file    = document.getElementById('galleryFile').files[0];
-  const urlVal  = document.getElementById('galleryUrl').value.trim();
-  const category= document.getElementById('galleryCategory').value;
-  const alt     = document.getElementById('galleryAlt').value.trim();
-  const btn     = document.getElementById('galleryAddBtn');
-  const st      = document.getElementById('galleryAddStatus');
-  if (!file && !urlVal) { alert('이미지 파일을 선택하거나 URL을 입력해 주세요.'); return; }
-  btn.disabled = true; st.textContent = '처리 중...';
-  try {
-    let src = urlVal;
-    if (file) {
-      const b64 = await fileToBase64(file);
-      const fname = `images/gallery/${Date.now()}_${file.name.replace(/[^a-zA-Z0-9._-]/g,'_')}`;
-      st.textContent = '이미지 업로드 중...';
-      src = await ghPutRaw(fname, b64, `[admin] 갤러리 이미지 추가`);
-    }
-    galleryData.push({ src, alt: alt || '페이지스튜디오 작품', category });
-    await saveGallery('갤러리 사진 추가', st);
-    e.target.reset();
-  } catch(err) { st.textContent = '오류: ' + err.message; btn.disabled = false; }
-});
-
-async function saveGallery(action, stEl) {
-  const btn = document.getElementById('galleryAddBtn');
-  if (stEl) stEl.textContent = '저장 중...';
-  try {
-    await ghPut('data/gallery.json', galleryData, `[admin] ${action}`);
-    renderGallery();
-    if (stEl) { stEl.textContent = '저장 완료! (배포 약 1분 소요)'; setTimeout(()=>{ stEl.textContent=''; },4000); }
-  } catch(err) { if (stEl) stEl.textContent = '저장 실패: ' + err.message; }
-  finally { btn.disabled = false; }
-}
-
-function fileToBase64(file) {
-  return new Promise((res, rej) => {
-    const r = new FileReader();
-    r.onload  = () => res(r.result.split(',')[1]);
-    r.onerror = rej;
-    r.readAsDataURL(file);
-  });
-}
-</script>
-<style>
-  .admin-table td {
-    padding: 12px 16px;
-    border-bottom: 1px solid rgba(234,201,183,0.35);
-    color: var(--text-body);
-    font-family: var(--font-sans);
-    font-size: 0.875rem;
-    vertical-align: middle;
-  }
-  .admin-table tr:last-child td { border-bottom: none; }
-  .admin-table tr:hover td { background-color: rgba(240,239,234,0.5); }
-  @media (max-width: 768px) {
-    .admin-header { padding: 14px 20px; }
-    .admin-content { padding: 24px 16px; }
-    .admin-card { padding: 20px 16px; }
-    .admin-grid-2 { grid-template-columns: 1fr !important; }
-  }
-</style>
+  <script src="js/content-manager.js"></script>
+  <script src="js/admin.js"></script>
 </body>
 </html>

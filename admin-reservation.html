@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>예약하기 관리 | PAGE STUDIO</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&family=Noto+Serif+KR:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body data-admin-page="true" data-admin-sections="reservation">
+
+  <section class="admin-lock-screen" id="adminLockScreen">
+    <div class="admin-lock-card">
+      <p class="eyebrow">Admin Access</p>
+      <h1 id="adminLockTitle">관리자 비밀번호를 입력해 주세요</h1>
+      <p id="adminLockLead">설정된 비밀번호를 입력하면 관리자 페이지로 들어갈 수 있습니다.</p>
+      <form id="adminLockForm" class="admin-lock-form">
+        <label class="admin-field">
+          <span class="admin-field__label" id="adminPasswordLabel">비밀번호</span>
+          <input class="admin-field__input" id="adminPasswordInput" type="password" autocomplete="current-password" placeholder="비밀번호를 입력해 주세요">
+        </label>
+        <label class="admin-field admin-field--hidden" id="adminPasswordConfirmField">
+          <span class="admin-field__label">비밀번호 확인</span>
+          <input class="admin-field__input" id="adminPasswordConfirmInput" type="password" autocomplete="new-password" placeholder="비밀번호를 한 번 더 입력해 주세요">
+        </label>
+        <div class="admin-lock-actions">
+          <button class="button button--solid" type="submit" id="adminLockSubmit">입장하기</button>
+          <a class="button button--ghost" href="admin.html">관리자 메인</a>
+        </div>
+        <p class="admin-lock-error" id="adminLockError" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+
+  <div class="admin-shell">
+    <aside class="admin-sidebar">
+      <a class="admin-sidebar__brand" href="admin.html">
+        <span class="admin-sidebar__title">PAGE STUDIO</span>
+        <small>Admin</small>
+      </a>
+      <nav class="admin-sidebar__nav" aria-label="관리자 메뉴">
+        <a href="admin.html">대시보드</a>
+        <a href="admin-common.html">공통 정보</a>
+        <a href="admin-home.html">홈</a>
+        <a href="admin-services.html">촬영안내</a>
+        <a href="admin-gallery.html">갤러리</a>
+        <a href="admin-price.html">가격안내</a>
+        <a href="admin-inquiry.html">문의하기</a>
+        <a href="admin-reservation.html" class="is-active">예약하기</a>
+      </nav>
+      <div class="admin-sidebar__footer">
+        <a href="index.html" target="_blank" rel="noreferrer">홈페이지 보기 →</a>
+        <button type="button" id="changePassword">비밀번호 변경</button>
+      </div>
+    </aside>
+
+    <main class="admin-main">
+      <div class="admin-main__header">
+        <div>
+          <p class="eyebrow">Admin / 예약하기</p>
+          <h1>예약하기 관리</h1>
+          <p>예약 페이지 상단 문구와 예약 전 안내 카드 내용을 수정합니다.</p>
+        </div>
+        <div class="admin-actions">
+          <button class="button button--solid" type="button" id="saveContent">저장하기</button>
+          <button class="button button--ghost" type="button" id="resetContent">기본값으로</button>
+        </div>
+      </div>
+      <div id="adminStatus" class="admin-status" aria-live="polite"></div>
+      <div id="adminForm" class="admin-form-grid"></div>
+    </main>
+  </div>
+
+  <script src="js/content-manager.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>
