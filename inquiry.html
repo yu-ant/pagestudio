@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>문의하기 | PAGE STUDIO</title>
+  <meta name="description" content="페이지 스튜디오 문의하기 페이지입니다. 촬영 전 궁금한 점과 위치, 연락처를 확인하실 수 있습니다.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&family=Noto+Serif+KR:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="site-header">
+      <div class="container nav-wrap">
+        <a class="brand" href="index.html" aria-label="PAGE STUDIO 홈">
+          <span class="brand__en">PAGE STUDIO</span>
+          <span class="brand__ko">페이지 스튜디오</span>
+        </a>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="메뉴 열기">
+          <span></span>
+          <span></span>
+        </button>
+        <nav class="site-nav" id="site-menu" aria-label="주 메뉴">
+          <a href="index.html">홈</a>
+          <a href="services.html">촬영안내</a>
+          <a href="gallery.html">갤러리</a>
+          <a href="price.html">가격안내</a>
+          <a href="inquiry.html">문의하기</a>
+          <a href="reservation.html">예약하기</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="page-hero">
+        <div class="container">
+          <p class="eyebrow">Inquiry</p>
+          <h1 data-edit="inquiry.heroTitle" data-mode="html">촬영 전 궁금한 점을 편하게 남겨주시면 자세히 안내해드립니다</h1>
+          <p data-edit="inquiry.heroLead" data-mode="html">상품 선택이 고민되시거나 준비물, 일정, 위치 안내가 필요하실 때 문의 페이지를 이용해 주세요.</p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container contact-page-grid">
+          <div class="map-placeholder reveal">
+            <div class="map-placeholder__inner">
+              <strong data-edit="inquiry.mapTitle">PAGE STUDIO</strong>
+              <span data-edit="inquiry.mapBody" data-mode="html">부산 금정구 부산대 인근</span>
+            </div>
+          </div>
+          <div class="contact-page-info reveal reveal--delay">
+            <article class="detail-card">
+              <h3 data-edit="inquiry.info1Title">주소</h3>
+              <p data-edit="inquiry.info1Body" data-mode="html">부산 금정구 부산대 인근<br>상세 주소는 예약 확정 후 안내드립니다.</p>
+            </article>
+            <article class="detail-card">
+              <h3 data-edit="inquiry.info2Title">연락처</h3>
+              <p data-edit="inquiry.info2Body" data-mode="html">010-0000-0000<br>@page.studio</p>
+            </article>
+            <article class="detail-card">
+              <h3 data-edit="inquiry.info3Title">운영 시간</h3>
+              <p data-edit="inquiry.info3Body" data-mode="html">화요일 - 일요일 / 10:00 - 19:00<br>월요일 휴무</p>
+            </article>
+            <a class="button button--solid" href="reservation.html">예약하러 가기</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-wrap">
+        <div>
+          <p class="site-footer__brand">PAGE STUDIO</p>
+          <p class="site-footer__text" data-edit="global.footerText" data-mode="html">정교한 조명과 예술적 퀄리티로 고객님의 이야기를 기록합니다.</p>
+        </div>
+        <p class="site-footer__copy">© <span id="year"></span> PAGE STUDIO. All rights reserved.</p>
+      </div>
+    </footer>
+  </div>
+  <script src="js/content-manager.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
